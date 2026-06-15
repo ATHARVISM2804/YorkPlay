@@ -7,7 +7,6 @@
 
 import heroImage from '../assets/hero.png';
 import creatorsImage from '../assets/creators.png';
-import logoImage from '../assets/logo.png';
 
 // ---- Types ----
 
