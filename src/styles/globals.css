@@ -1,0 +1,488 @@
+@import "tailwindcss";
+
+/* ============================================
+   DESIGN SYSTEM — YORK SCREENPLAY
+   Frontier Cinema — ink, amber, wilderness
+   ============================================ */
+
+@theme {
+  /* ---- Frontier Cinema Palette ---- */
+  --color-ink: #0B0A08;
+  --color-surface: #161411;
+  --color-paper: #F0E6D2;
+  --color-muted: #7A6A52;
+  --color-line: rgba(240, 230, 210, 0.08);
+  --color-gold: #D4A843;
+  --color-gold-soft: rgba(212, 168, 67, 0.12);
+  --color-live: #C44B2F;
+  --color-river: #4A7C8F;
+  --color-forest: #2D4A3E;
+  --color-rawhide: #3A2E22;
+  --color-ember: #E07B3A;
+
+  /* ---- Typography ---- */
+  --font-display: 'Cormorant Garamond', 'Georgia', serif;
+  --font-body: 'Lora', 'Georgia', serif;
+  --font-ui: 'Satoshi', 'General Sans', system-ui, sans-serif;
+
+  /* ---- Type scale (clamp: mobile → desktop) ---- */
+  --text-hero: clamp(3.5rem, 10vw + 1rem, 10rem);
+  --text-display: clamp(2.25rem, 5vw + 0.5rem, 5rem);
+  --text-heading: clamp(1.5rem, 3vw + 0.25rem, 3rem);
+  --text-subheading: clamp(1.125rem, 1.5vw + 0.25rem, 1.5rem);
+  --text-body: clamp(0.9375rem, 0.5vw + 0.75rem, 1.125rem);
+  --text-caption: clamp(0.6875rem, 0.3vw + 0.5rem, 0.8125rem);
+
+  /* ---- Spacing ---- */
+  --spacing-section: clamp(5rem, 10vh, 10rem);
+
+  /* ---- Transitions ---- */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-circ: cubic-bezier(0.85, 0, 0.15, 1);
+  --duration-fast: 300ms;
+  --duration-medium: 600ms;
+  --duration-slow: 1000ms;
+}
+
+/* ============================================
+   BASE RESETS
+   ============================================ */
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: auto; /* Lenis handles smooth scroll */
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: 1.6;
+  color: var(--color-paper);
+  background-color: var(--color-ink);
+  overflow-x: hidden;
+}
+
+/* Lenis */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--color-paper);
+}
+
+h1 { font-size: var(--text-hero); font-weight: 300; letter-spacing: 0.04em; }
+h2 { font-size: var(--text-display); }
+h3 { font-size: var(--text-heading); }
+h4 { font-size: var(--text-subheading); }
+
+p {
+  max-width: 72ch;
+  color: var(--color-muted);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ---- Eyebrow labels ---- */
+.eyebrow {
+  font-family: var(--font-ui);
+  font-size: var(--text-caption);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: var(--color-gold);
+}
+
+/* ---- Tabular figures for numerals ---- */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
+/* ============================================
+   FILM GRAIN — AGED PAPER TEXTURE
+   ============================================ */
+
+.film-grain {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.04;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+  animation: grain 0.5s steps(6) infinite;
+}
+
+.film-grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(212, 168, 67, 0.02) 0%,
+    transparent 40%,
+    transparent 60%,
+    rgba(212, 168, 67, 0.015) 100%
+  );
+  pointer-events: none;
+}
+
+@keyframes grain {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-5%, -10%); }
+  20% { transform: translate(-15%, 5%); }
+  30% { transform: translate(7%, -25%); }
+  40% { transform: translate(-5%, 25%); }
+  50% { transform: translate(-15%, 10%); }
+  60% { transform: translate(15%, 0%); }
+  70% { transform: translate(0%, 15%); }
+  80% { transform: translate(3%, 35%); }
+  90% { transform: translate(-10%, 10%); }
+}
+
+/* ============================================
+   VIGNETTE
+   ============================================ */
+
+.vignette::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 40%,
+    rgba(11, 10, 8, 0.6) 100%
+  );
+  z-index: 1;
+}
+
+/* ============================================
+   LETTERBOX BARS
+   ============================================ */
+
+.letterbox {
+  position: relative;
+}
+
+.letterbox::before,
+.letterbox::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: clamp(16px, 3vh, 40px);
+  background-color: #000;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.letterbox::before { top: 0; }
+.letterbox::after { bottom: 0; }
+
+/* ============================================
+   HAIRLINE BORDERS
+   ============================================ */
+
+.border-line {
+  border: 1px solid var(--color-line);
+}
+
+.border-gold {
+  border: 1px solid rgba(212, 168, 67, 0.2);
+}
+
+/* ============================================
+   EMBER PARTICLES OVERLAY
+   ============================================ */
+
+@keyframes ember-float {
+  0% {
+    transform: translateY(0) translateX(0) scale(1);
+    opacity: 0;
+  }
+  10% { opacity: 1; }
+  90% { opacity: 0.6; }
+  100% {
+    transform: translateY(-100vh) translateX(60px) scale(0);
+    opacity: 0;
+  }
+}
+
+@keyframes ember-glow {
+  0%, 100% { box-shadow: 0 0 4px 1px rgba(224, 123, 58, 0.4); }
+  50% { box-shadow: 0 0 8px 2px rgba(212, 168, 67, 0.6); }
+}
+
+/* ============================================
+   TOPOGRAPHIC MAP TEXTURE
+   ============================================ */
+
+.topo-bg {
+  position: relative;
+}
+
+.topo-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-conic-gradient(
+      from 0deg at 50% 50%,
+      transparent 0deg,
+      rgba(212, 168, 67, 0.015) 1deg,
+      transparent 2deg
+    );
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.5;
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+/* Visually hidden utility */
+.visually-hidden:where(:not(:focus-within, :active)) {
+  position: absolute !important;
+  clip-path: inset(50%) !important;
+  overflow: hidden !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  white-space: nowrap !important;
+}
+
+/* Gold focus rings */
+:where(a:any-link, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .film-grain {
+    animation: none;
+    opacity: 0.02;
+  }
+}
+
+/* ============================================
+   CUSTOM SCROLLBAR
+   ============================================ */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-ink);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(212, 168, 67, 0.25);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(212, 168, 67, 0.45);
+}
+
+/* ============================================
+   SELECTION
+   ============================================ */
+
+::selection {
+  background-color: rgba(212, 168, 67, 0.3);
+  color: var(--color-paper);
+}
+
+/* ============================================
+   CINEMATIC FOCUS MODE
+   ============================================ */
+
+body.focus-mode-active {
+  cursor: none; /* Let the custom cursor be the primary light */
+}
+
+/* 2.35:1 Cinematic Crop bars that slide in */
+body.focus-mode-active .letterbox::before,
+body.focus-mode-active .letterbox::after {
+  height: clamp(60px, 12vh, 140px);
+  background-color: #000;
+  transition: height 0.8s var(--ease-out-expo);
+  box-shadow: 0 0 40px rgba(0,0,0,0.8);
+}
+
+/* Spotlight masking container */
+.focus-spotlight {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9998; /* Just below custom cursor, above page contents */
+  background: radial-gradient(
+    circle 220px at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(11, 10, 8, 0.0) 0%,
+    rgba(11, 10, 8, 0.5) 35%,
+    rgba(11, 10, 8, 0.97) 85%,
+    var(--color-ink) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  will-change: background;
+}
+
+body.focus-mode-active .focus-spotlight {
+  opacity: 1;
+}
+
+/* Smoothly dim all elements in focus mode */
+body.focus-mode-active nav,
+body.focus-mode-active footer,
+body.focus-mode-active .no-focus-dim {
+  opacity: 0.08 !important;
+  pointer-events: none;
+  transition: opacity 0.8s ease;
+}
+
+/* Let the active focus elements bypass dimming */
+body.focus-mode-active .focus-highlight-element {
+  position: relative;
+  z-index: 9999;
+}
+
+/* Title display treatment */
+.title-display {
+  position: relative;
+  display: inline-block;
+  font-family: var(--font-display);
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.title-display::after {
+  content: '';
+  position: absolute;
+  bottom: -0.15em;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--color-gold) 20%,
+    var(--color-gold) 80%,
+    transparent 100%
+  );
+  opacity: 0.4;
+}
+
+
+/* ============================================
+   EXPEDITION TIMELINE
+   ============================================ */
+
+.expedition-timeline {
+  position: relative;
+  padding-left: 2rem;
+}
+
+.expedition-timeline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--color-gold) 10%,
+    var(--color-gold) 90%,
+    transparent
+  );
+  opacity: 0.3;
+}
+
+.timeline-entry {
+  position: relative;
+  padding: 1.5rem 0;
+  opacity: 0.4;
+  transition: opacity 0.6s ease;
+}
+
+.timeline-entry.active {
+  opacity: 1;
+}
+
+.timeline-entry::before {
+  content: '';
+  position: absolute;
+  left: -2rem;
+  top: 1.75rem;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-rawhide);
+  border: 1.5px solid var(--color-gold);
+  transition: background-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.timeline-entry.active::before {
+  background: var(--color-gold);
+  box-shadow: 0 0 12px rgba(212, 168, 67, 0.5);
+}
