@@ -6,6 +6,9 @@
 // ============================================
 
 import heroImage from '../assets/hero.png';
+import hero1 from '../assets/hero1.png';
+import hero2 from '../assets/hero2.png';
+import hero3 from '../assets/hero3.png';
 import creatorsImage from '../assets/creators.png';
 
 // ---- Types ----
@@ -235,7 +238,7 @@ export const navLinks: NavLink[] = [
   { label: 'Correspondence', path: '/contact' },
 ];
 
-export const heroMediaUrl: string = heroImage;
+export const heroMediaUrls: string[] = [heroImage, hero1, hero2, hero3];
 export const logoUrl: string = 'https://res.cloudinary.com/dmhabztbf/image/upload/v1781511206/ChatGPT_Image_Jun_15_2026_01_39_22_PM_mbaqbe.png';
 export const audioUrl: string = 'https://cdn.pixabay.com/audio/2022/01/18/audio_d0a13f69d2.mp3'; // Cinematic Ambient Background
 

@@ -1,8 +1,8 @@
-import { useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { filmData, heroMediaUrl, creators, whyPoints } from '../data/auction';
+import { filmData, heroMediaUrls, creators, whyPoints } from '../data/auction';
 import RevealText from '../components/ui/RevealText';
 import RevealImage from '../components/ui/RevealImage';
 import BidConsole from '../components/ui/BidConsole';
@@ -19,8 +19,9 @@ gsap.registerPlugin(ScrollTrigger);
  * Six sections: Hero, Narrative, Bid Console, Creators, Why This Story, Closing CTA
  */
 export default function Hook() {
+  const [heroIndex, setHeroIndex] = useState(0);
   const heroRef = useRef<HTMLDivElement>(null);
-  const heroImgRef = useRef<HTMLImageElement>(null);
+  const heroImgRef = useRef<HTMLDivElement>(null);
   const creatorsImgRef = useRef<HTMLImageElement>(null);
   const prefersReducedMotion = useReducedMotion();
 
@@ -128,6 +129,14 @@ export default function Hook() {
     };
   }, [prefersReducedMotion]);
 
+  // Automated background carousel
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setHeroIndex((prev) => (prev + 1) % heroMediaUrls.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
   // Handle creators 3D tilt hover
   const handleCreatorsMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (prefersReducedMotion || !creatorsImgRef.current) return;
@@ -190,26 +199,41 @@ export default function Hook() {
         {/* Cinematic camera viewfinder overlay */}
         <Viewfinder heroRef={heroRef} />
 
-        {/* Background Image */}
-        <img
+        {/* Background Image Carousel Container for Parallax */}
+        <div 
           ref={heroImgRef}
-          src={heroMediaUrl}
-          alt=""
-          fetchPriority="high"
-          decoding="sync"
           style={{
             position: 'absolute',
             inset: '-10% 0',
             width: '100%',
             height: '120%',
-            objectFit: 'cover',
-            objectPosition: 'center 40%',
-            filter: 'brightness(0.3) contrast(1.2) saturate(0.8)',
             zIndex: 0,
             transformStyle: 'preserve-3d',
             willChange: 'transform',
           }}
-        />
+        >
+          {heroMediaUrls.map((url, idx) => (
+            <img
+              key={idx}
+              src={url}
+              alt=""
+              fetchPriority={idx === 0 ? "high" : "auto"}
+              decoding={idx === 0 ? "sync" : "async"}
+              style={{
+                position: 'absolute',
+                inset: 0,
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                objectPosition: 'center 40%',
+                filter: 'brightness(0.6) contrast(1.1) saturate(0.9)',
+                opacity: idx === heroIndex ? 1 : 0,
+                transition: 'opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1)',
+                pointerEvents: 'none',
+              }}
+            />
+          ))}
+        </div>
 
         {/* Warm gradient overlay — amber/campfire feel */}
         <div
