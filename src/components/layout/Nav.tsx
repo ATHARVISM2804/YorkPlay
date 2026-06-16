@@ -47,7 +47,7 @@ export default function Nav() {
           // Browser blocked autoplay — start on first user interaction
           setIsPlaying(false);
           const startAudio = () => {
-            if (audioRef.current && !audioRef.current.playing) {
+            if (audioRef.current && audioRef.current.paused) {
               audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
             }
             document.removeEventListener('click', startAudio);
