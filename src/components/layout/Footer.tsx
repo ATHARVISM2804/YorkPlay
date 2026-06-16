@@ -3,170 +3,215 @@ import { filmData, navLinks, socialLinks, auctionConfig, logoUrl } from '../../d
 import Countdown from '../ui/Countdown';
 
 /**
- * Frontier-styled footer — warm, dignified, period-appropriate.
+ * Premium cinematic footer — balanced size, creative, themed.
  */
 export default function Footer() {
+  const linkStyle: React.CSSProperties = {
+    fontFamily: 'var(--font-ui)',
+    fontSize: '0.7rem',
+    textTransform: 'uppercase' as const,
+    letterSpacing: '0.15em',
+    color: 'var(--color-muted)',
+    textDecoration: 'none',
+    transition: 'color 0.3s ease',
+  };
+
   return (
-    <footer
-      style={{
-        borderTop: '1px solid var(--color-line)',
-        backgroundColor: 'var(--color-ink)',
-        padding: 'clamp(3rem, 6vh, 6rem) clamp(1.25rem, 4vw, 3rem)',
-        position: 'relative',
-      }}
-    >
-      {/* Subtle warm glow at top border */}
+    <footer style={{
+      backgroundColor: '#050403',
+      position: 'relative',
+      borderTop: '1px solid rgba(212,168,67,0.15)',
+    }}>
+      {/* Gold glow edge */}
       <div style={{
         position: 'absolute',
         top: 0,
         left: '50%',
         transform: 'translateX(-50%)',
-        width: '300px',
+        width: '50%',
         height: '1px',
-        background: 'linear-gradient(90deg, transparent, rgba(212,168,67,0.3), transparent)',
+        background: 'linear-gradient(90deg, transparent, rgba(212,168,67,0.5), transparent)',
+        boxShadow: '0 0 20px rgba(212,168,67,0.3)',
       }} />
 
-      <div
-        style={{
-          maxWidth: '1200px',
-          margin: '0 auto',
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-          gap: '3rem',
-        }}
-      >
-        {/* Brand */}
-        <div>
-          <img 
-            src={logoUrl} 
-            alt={filmData.title} 
-            style={{ 
-              height: '100px', 
-              width: 'auto', 
-              objectFit: 'contain', 
-              marginBottom: '1rem',
-              display: 'block'
-            }} 
-          />
-          <p style={{ fontSize: '0.875rem', color: 'var(--color-muted)', lineHeight: 1.6, fontStyle: 'italic' }}>
-            {filmData.tagline}
-          </p>
-        </div>
+      {/* ── Top Band: Logo Centered ── */}
+      <div style={{
+        padding: '3.5rem 2rem 2.5rem',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        borderBottom: '1px solid rgba(255,255,255,0.04)',
+      }}>
+        <img
+          src={logoUrl}
+          alt={filmData.title}
+          style={{ height: '130px', width: 'auto', objectFit: 'contain', marginBottom: '1rem' }}
+        />
+        <p style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: '0.95rem',
+          color: 'rgba(212,168,67,0.45)',
+          fontStyle: 'italic',
+          letterSpacing: '0.05em',
+        }}>
+          {filmData.tagline}
+        </p>
+      </div>
 
-        {/* Navigation */}
-        <div>
-          <h4
-            style={{
+      {/* ── Middle Band: 3-Column Grid ── */}
+      <div style={{
+        maxWidth: '1000px',
+        margin: '0 auto',
+        padding: '3rem clamp(1.5rem, 4vw, 3rem)',
+      }}>
+        <style>{`
+          .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+            text-align: center;
+          }
+          @media (min-width: 700px) {
+            .footer-grid {
+              grid-template-columns: 1fr auto 1fr;
+              text-align: left;
+            }
+            .footer-grid > *:last-child {
+              text-align: right;
+            }
+            .footer-grid > *:nth-child(2) {
+              text-align: center;
+            }
+          }
+        `}</style>
+
+        <div className="footer-grid">
+          {/* Col 1: Navigate */}
+          <div>
+            <h4 style={{
               fontFamily: 'var(--font-ui)',
-              fontSize: '0.6875rem',
+              fontSize: '0.6rem',
               fontWeight: 600,
               textTransform: 'uppercase',
-              letterSpacing: '0.2em',
-              color: 'var(--color-muted)',
-              marginBottom: '1rem',
-            }}
-          >
-            Navigate
-          </h4>
-          <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
-            {navLinks.map(link => (
-              <li key={link.path}>
+              letterSpacing: '0.3em',
+              color: 'var(--color-gold)',
+              marginBottom: '1.25rem',
+            }}>
+              Navigate
+            </h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+              {navLinks.map(link => (
                 <Link
+                  key={link.path}
                   to={link.path}
-                  style={{
-                    fontFamily: 'var(--font-body)',
-                    fontSize: '0.875rem',
-                    color: 'var(--color-paper)',
-                    textDecoration: 'none',
-                    transition: 'color 0.3s ease',
-                  }}
+                  style={linkStyle}
+                  onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--color-gold)'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--color-muted)'; }}
                 >
                   {link.label}
                 </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+              ))}
+            </div>
+          </div>
 
-        {/* Auction Timer */}
-        <div>
-          <h4
-            style={{
+          {/* Col 2: Auction Countdown */}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <h4 style={{
               fontFamily: 'var(--font-ui)',
-              fontSize: '0.6875rem',
+              fontSize: '0.6rem',
               fontWeight: 600,
               textTransform: 'uppercase',
-              letterSpacing: '0.2em',
-              color: 'var(--color-muted)',
+              letterSpacing: '0.3em',
+              color: 'var(--color-gold)',
               marginBottom: '1rem',
-            }}
-          >
-            Auction Closes In
-          </h4>
-          <Countdown targetDate={auctionConfig.auctionEndDate} />
-        </div>
+            }}>
+              Auction Closes In
+            </h4>
+            <div style={{
+              padding: '1.25rem 2rem',
+              background: 'linear-gradient(180deg, rgba(212,168,67,0.04) 0%, transparent 100%)',
+              border: '1px solid rgba(212,168,67,0.1)',
+              borderRadius: '2px',
+            }}>
+              <Countdown targetDate={auctionConfig.auctionEndDate} />
+            </div>
+          </div>
 
-        {/* Social / Contact */}
-        <div>
-          <h4
-            style={{
+          {/* Col 3: Connect */}
+          <div>
+            <h4 style={{
               fontFamily: 'var(--font-ui)',
-              fontSize: '0.6875rem',
+              fontSize: '0.6rem',
               fontWeight: 600,
               textTransform: 'uppercase',
-              letterSpacing: '0.2em',
-              color: 'var(--color-muted)',
-              marginBottom: '1rem',
-            }}
-          >
-            Connect
-          </h4>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            <a
-              href={`mailto:${socialLinks.email}`}
-              style={{ fontSize: '0.875rem', color: 'var(--color-paper)', textDecoration: 'none' }}
-            >
-              {socialLinks.email}
-            </a>
-            <a
-              href={socialLinks.twitter}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ fontSize: '0.875rem', color: 'var(--color-muted)', textDecoration: 'none' }}
-            >
-              Twitter / X
-            </a>
-            <a
-              href={socialLinks.instagram}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ fontSize: '0.875rem', color: 'var(--color-muted)', textDecoration: 'none' }}
-            >
-              Instagram
-            </a>
+              letterSpacing: '0.3em',
+              color: 'var(--color-gold)',
+              marginBottom: '1.25rem',
+            }}>
+              Connect
+            </h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+              <a
+                href={`mailto:${socialLinks.email}`}
+                style={linkStyle}
+                onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--color-gold)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--color-muted)'; }}
+              >
+                {socialLinks.email}
+              </a>
+              <a
+                href={socialLinks.twitter}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={linkStyle}
+                onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--color-gold)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--color-muted)'; }}
+              >
+                Twitter / X
+              </a>
+              <a
+                href={socialLinks.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={linkStyle}
+                onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--color-gold)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--color-muted)'; }}
+              >
+                Instagram
+              </a>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Copyright */}
-      <div
-        style={{
-          maxWidth: '1200px',
-          margin: '3rem auto 0',
-          paddingTop: '1.5rem',
-          borderTop: '1px solid var(--color-line)',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          gap: '1rem',
-        }}
-      >
-        <p style={{ fontSize: '0.6875rem', color: 'var(--color-muted)', fontFamily: 'var(--font-ui)' }}>
+      {/* ── Bottom Bar ── */}
+      <div style={{
+        maxWidth: '1000px',
+        margin: '0 auto',
+        padding: '1rem clamp(1.5rem, 4vw, 3rem)',
+        borderTop: '1px solid rgba(255,255,255,0.04)',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        gap: '0.5rem',
+      }}>
+        <p style={{
+          fontSize: '0.6rem',
+          color: 'rgba(255,255,255,0.2)',
+          fontFamily: 'var(--font-ui)',
+          letterSpacing: '0.08em',
+          textTransform: 'uppercase',
+        }}>
           © {new Date().getFullYear()} {filmData.title}. All rights reserved.
         </p>
-        <p style={{ fontSize: '0.6875rem', color: 'var(--color-muted)', fontStyle: 'italic' }}>
-          Private auction. Invitation only.
+        <p style={{
+          fontSize: '0.6rem',
+          color: 'rgba(212,168,67,0.4)',
+          fontStyle: 'italic',
+          letterSpacing: '0.08em',
+        }}>
+          Private auction · Invitation only
         </p>
       </div>
     </footer>
