@@ -12,7 +12,7 @@ export default function Nav() {
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [focusModeActive, setFocusModeActive] = useState(false);
+
   const [isPlaying, setIsPlaying] = useState(true);
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -22,14 +22,7 @@ export default function Nav() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Listen to focus mode class changes on body
-  useEffect(() => {
-    const observer = new MutationObserver(() => {
-      setFocusModeActive(document.body.classList.contains('focus-mode-active'));
-    });
-    observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
-    return () => observer.disconnect();
-  }, []);
+
 
   // Close menu on route change
   useEffect(() => {
@@ -42,20 +35,28 @@ export default function Nav() {
     return () => { document.body.style.overflow = ''; };
   }, [menuOpen]);
 
-  const toggleFocusMode = () => {
-    window.dispatchEvent(new CustomEvent('toggle-focus-mode'));
-  };
+
 
   // Attempt autoplay on mount, handle browser block
   useEffect(() => {
     if (audioRef.current) {
-      // Set volume lower for ambient background
       audioRef.current.volume = 0.3;
       const playPromise = audioRef.current.play();
       if (playPromise !== undefined) {
         playPromise.catch(() => {
-          // Auto-play was prevented by browser
+          // Browser blocked autoplay — start on first user interaction
           setIsPlaying(false);
+          const startAudio = () => {
+            if (audioRef.current && !audioRef.current.playing) {
+              audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
+            }
+            document.removeEventListener('click', startAudio);
+            document.removeEventListener('touchstart', startAudio);
+            document.removeEventListener('keydown', startAudio);
+          };
+          document.addEventListener('click', startAudio, { once: true });
+          document.addEventListener('touchstart', startAudio, { once: true });
+          document.addEventListener('keydown', startAudio, { once: true });
         });
       }
     }
@@ -274,45 +275,54 @@ export default function Nav() {
             }
           `}</style>
 
-          {/* Cinematic Focus Mode Button */}
-          <button
-            onClick={toggleFocusMode}
-            data-cursor-label={focusModeActive ? "EXIT" : "FOCUS"}
+          {/* Place Bid Button */}
+          <Link
+            to="/#bid-console"
+            onClick={() => {
+              // If already on homepage, scroll to bid console
+              if (location.pathname === '/') {
+                const el = document.getElementById('bid-console');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}
             style={{
-              background: 'none',
-              border: focusModeActive ? '1px solid var(--color-gold)' : '1px solid var(--color-line)',
+              background: 'linear-gradient(135deg, rgba(212,168,67,0.15) 0%, rgba(212,168,67,0.05) 100%)',
+              border: '1px solid rgba(212,168,67,0.5)',
               borderRadius: '20px',
-              padding: '0.35rem 0.85rem',
+              padding: '0.4rem 1rem',
               fontFamily: 'var(--font-ui)',
               fontSize: '0.6rem',
               fontWeight: 700,
               textTransform: 'uppercase',
-              letterSpacing: '0.12em',
-              color: focusModeActive ? 'var(--color-gold)' : 'var(--color-paper)',
+              letterSpacing: '0.15em',
+              color: 'var(--color-gold)',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
               gap: '6px',
               transition: 'all 0.3s ease',
-              pointerEvents: 'auto',
+              textDecoration: 'none',
+              boxShadow: '0 0 15px rgba(212,168,67,0.1)',
             }}
-            className="focus-highlight-element"
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(212,168,67,0.3) 0%, rgba(212,168,67,0.1) 100%)';
+              e.currentTarget.style.boxShadow = '0 0 25px rgba(212,168,67,0.2)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(212,168,67,0.15) 0%, rgba(212,168,67,0.05) 100%)';
+              e.currentTarget.style.boxShadow = '0 0 15px rgba(212,168,67,0.1)';
+            }}
           >
-            <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-              {focusModeActive ? (
-                <path d="M2 2L8 8M8 2L2 8" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-              ) : (
-                <>
-                  <path d="M3 1H1V3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-                  <path d="M7 1H9V3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-                  <path d="M3 9H1V7" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-                  <path d="M7 9H9V7" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-                  <circle cx="5" cy="5" r="1" fill="currentColor" />
-                </>
-              )}
+            {/* Gavel icon */}
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M14.5 3.5L20.5 9.5" />
+              <path d="M11.5 6.5L17.5 12.5" />
+              <path d="M8 10L16 2" />
+              <path d="M2 22L10 14" />
+              <path d="M2 22H8V16" />
             </svg>
-            <span className="focus-btn-text">{focusModeActive ? 'Exit Cinema' : 'Cinema Mode'}</span>
-          </button>
+            <span>Place Bid</span>
+          </Link>
 
           {/* Mobile Hamburger */}
           <button
