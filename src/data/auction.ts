@@ -9,7 +9,6 @@ import heroImage from '../assets/hero.png';
 import hero1 from '../assets/hero1.png';
 import hero2 from '../assets/hero2.png';
 import hero3 from '../assets/hero3.png';
-import creatorsImage from '../assets/creators.png';
 
 // ---- Types ----
 
@@ -88,7 +87,7 @@ export interface TimelineEntry {
 export const filmData: FilmData = {
   title: 'YORK',
   titleLines: ['YORK'],
-  logline: 'Two boys — one free, one slave — would form a friendship that defied the rules. A journey that would alter the future of a country and change the destiny of both men.',
+  logline: 'Born into opposite worlds, two men form an unbreakable bond that transcends slavery and freedom. Bound by loyalty and tested by history, their journey across the American wilderness becomes one that will alter the course of a nation and reshape both of their destinies.',
   expandedPitch: 'They grew strong, loved, learned, and became men — until they were sent to a war they didn\'t understand, to fight an enemy they didn\'t hate. Then a president would send them on the greatest expedition in American history. A journey to explore an unknown wilderness, a journey that would alter the future of a country and change the destiny of both men. They returned heroes. But he returned to slavery. He demanded his freedom — to be part of a world that would refuse to accept him. He returned West and became a hero.',
   genre: 'Historical Epic / Drama',
   pageCount: 132,
@@ -116,15 +115,15 @@ export const creators: Creator[] = [
     name: 'Jon Stewart',
     role: 'Writer & Creator',
     credit: 'Written by',
-    bio: 'Jon is an Emmy-nominated screenwriter whose debut feature premiered at Toronto. His work bridges epic historical narrative with deeply intimate human stories. Before screenwriting, he spent six years as a documentary producer covering overlooked chapters of American history across the Midwest and the frontier states.',
-    photoUrl: creatorsImage,
+    bio: 'Jon Stewart is a Deerfield, Illinois native, former candidate for Governor of Illinois, and former professional wrestler. An accomplished investigative producer, author, show-runner, and documentary filmmaker. He brings a singular blend of political insight, athletic discipline, and investigative rigor to his work as a screenwriter and television show writer.',
+    photoUrl: 'https://res.cloudinary.com/dmhabztbf/image/upload/v1782803030/jon_stewarts_euyb5j.png',
   },
   {
-    name: 'Atharv Golait',
-    role: 'Co-Writer & Story Architect',
+    name: 'Thomas Ferraro',
+    role: 'Co-Writer & Historian',
     credit: 'Co-written by',
-    bio: 'Atharv is a Sundance Fellow and Nicholl semifinalist whose scripts have been optioned by three A-list production houses. He brings a background in visual storytelling and narrative design, shaping York\'s journey from historical record into a cinematic experience that bridges two centuries of the American story.',
-    photoUrl: creatorsImage,
+    bio: 'Thomas Ferraro is a Chicago-area native, decorated law enforcement and security veteran, President of the Niles Historical Society, and published historian. He brings decades of real-world experience and a deep passion for American history to his work as a screenwriter.',
+    photoUrl: 'https://res.cloudinary.com/dmhabztbf/image/upload/v1782803037/thomas_ylzkbd.jpg',
   },
 ];
 
@@ -140,9 +139,9 @@ export const contacts: Contact[] = [
     ],
   },
   {
-    name: 'Atharv Golait',
-    role: 'Co-Writer',
-    email: 'atharv@yorkscreenplay.com',
+    name: 'Thomas Ferraro',
+    role: 'Co-Writer & Historian',
+    email: 'thomas@yorkscreenplay.com',
     social: [
       { platform: 'Twitter / X', url: 'https://x.com/' },
       { platform: 'LinkedIn', url: 'https://linkedin.com/' },
@@ -240,7 +239,7 @@ export const navLinks: NavLink[] = [
 
 export const heroMediaUrls: string[] = [heroImage, hero1, hero2, hero3];
 export const logoUrl: string = 'https://res.cloudinary.com/dmhabztbf/image/upload/v1781511206/ChatGPT_Image_Jun_15_2026_01_39_22_PM_mbaqbe.png';
-export const audioUrl: string = 'https://cdn.pixabay.com/audio/2022/01/18/audio_d0a13f69d2.mp3'; // Cinematic Ambient Background
+export const audioUrl: string = 'https://res.cloudinary.com/dmhabztbf/video/upload/v1782803855/The_Last_of_the_Mohicans_-_Promentory_Main_Theme_rl1fqk.mp3'; // The Last of the Mohicans — Promentory Main Theme
 
 export const socialLinks = {
   twitter: 'https://x.com/',

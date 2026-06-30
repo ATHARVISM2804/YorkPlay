@@ -22,7 +22,7 @@ export default function Hook() {
   const [heroIndex, setHeroIndex] = useState(0);
   const heroRef = useRef<HTMLDivElement>(null);
   const heroImgRef = useRef<HTMLDivElement>(null);
-  const creatorsImgRef = useRef<HTMLImageElement>(null);
+
   const prefersReducedMotion = useReducedMotion();
 
   // Hero parallax on scroll
@@ -137,36 +137,7 @@ export default function Hook() {
     return () => clearInterval(interval);
   }, []);
 
-  // Handle creators 3D tilt hover
-  const handleCreatorsMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (prefersReducedMotion || !creatorsImgRef.current) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const xc = rect.width / 2;
-    const yc = rect.height / 2;
-    const dx = (x - xc) / xc;
-    const dy = (y - yc) / yc;
 
-    gsap.to(creatorsImgRef.current, {
-      rotationY: dx * 10,
-      rotationX: -dy * 10,
-      scale: 1.03,
-      duration: 0.6,
-      ease: 'power2.out',
-    });
-  };
-
-  const handleCreatorsMouseLeave = () => {
-    if (!creatorsImgRef.current) return;
-    gsap.to(creatorsImgRef.current, {
-      rotationY: 0,
-      rotationX: 0,
-      scale: 1,
-      duration: 0.8,
-      ease: 'power3.out',
-    });
-  };
 
   // Scroll to content
   const scrollToContent = () => {
@@ -274,15 +245,14 @@ export default function Hook() {
               fontFamily: 'var(--font-body)',
               fontSize: 'var(--text-subheading)',
               color: 'var(--color-paper)',
-              marginTop: '0.5rem',
-              lineHeight: 1.6,
-              maxWidth: '600px',
+              lineHeight: 1.7,
+              maxWidth: '680px',
               margin: '0.5rem auto 0',
-              opacity: 0.85,
+              opacity: 0.88,
               fontStyle: 'italic',
             }}
           >
-            {filmData.logline}
+            Born into opposite worlds, two men form an unbreakable bond that transcends slavery and freedom. Bound by loyalty and tested by history, their journey across the American wilderness becomes one that will alter the course of a nation and reshape both of their destinies.
           </p>
         </div>
 
@@ -375,46 +345,45 @@ export default function Hook() {
 
         <div
           style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: 'clamp(2rem, 4vw, 4rem)',
-            alignItems: 'start',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 'clamp(3rem, 6vw, 5rem)',
           }}
         >
-          {/* Photo with hover 3D tilt */}
-          <div
-            onMouseMove={handleCreatorsMouseMove}
-            onMouseLeave={handleCreatorsMouseLeave}
-            style={{ perspective: '1000px', cursor: 'pointer' }}
-            className="focus-highlight-element"
-          >
-            <RevealImage direction="left">
-              <img
-                ref={creatorsImgRef}
-                src={creators[0].photoUrl}
-                alt={`${creators[0].name} and ${creators[1].name} — screenwriters`}
-                loading="lazy"
-                width="600"
-                height="600"
-                style={{
-                  width: '100%',
-                  height: 'auto',
-                  aspectRatio: '1 / 1',
-                  objectFit: 'cover',
-                  borderRadius: '2px',
-                  filter: 'contrast(1.1) saturate(0.85)',
-                  transformStyle: 'preserve-3d',
-                  willChange: 'transform',
-                  border: '1px solid rgba(212,168,67,0.15)',
-                }}
-              />
-            </RevealImage>
-          </div>
+          {creators.map((creator, idx) => (
+            <div
+              key={creator.name}
+              className="focus-highlight-element"
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'minmax(200px, 280px) 1fr',
+                gap: 'clamp(1.5rem, 3vw, 3rem)',
+                alignItems: 'start',
+              }}
+            >
+              {/* Individual photo */}
+              <RevealImage direction={idx === 0 ? 'left' : 'right'}>
+                <img
+                  src={creator.photoUrl}
+                  alt={`${creator.name} — ${creator.role}`}
+                  loading="lazy"
+                  width="280"
+                  height="350"
+                  style={{
+                    width: '100%',
+                    height: 'auto',
+                    aspectRatio: '4 / 5',
+                    objectFit: 'cover',
+                    objectPosition: 'center top',
+                    borderRadius: '2px',
+                    filter: 'contrast(1.05) saturate(0.9)',
+                    border: '1px solid rgba(212,168,67,0.15)',
+                  }}
+                />
+              </RevealImage>
 
-          {/* Bios */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
-            {creators.map((creator) => (
-              <div key={creator.name}>
+              {/* Bio */}
+              <div style={{ paddingTop: '0.5rem' }}>
                 <RevealText as="h3">
                   {creator.name}
                 </RevealText>
@@ -435,8 +404,8 @@ export default function Hook() {
                   {creator.bio}
                 </p>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </section>
 

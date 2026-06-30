@@ -243,6 +243,142 @@ export default function RipReel() {
       </section>
 
       {/* ════════════════════════════════════════════════════════════
+          SECTION 1.5 — FEATURED REELS (Two videos side by side)
+          ════════════════════════════════════════════════════════════ */}
+      <section style={{
+        padding: 'clamp(4rem, 8vh, 7rem) clamp(1.25rem, 4vw, 3rem)',
+        backgroundColor: 'var(--color-ink)',
+        position: 'relative',
+      }}>
+        {/* Ambient warm glow */}
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '90%',
+          height: '60%',
+          background: 'radial-gradient(ellipse, rgba(212,168,67,0.03) 0%, transparent 60%)',
+          pointerEvents: 'none',
+        }} />
+
+        <div style={{ textAlign: 'center', marginBottom: 'clamp(2rem, 4vh, 3.5rem)', position: 'relative', zIndex: 1 }}>
+          <span className="eyebrow" style={{ display: 'block', marginBottom: '1rem' }}>
+            Featured Reels
+          </span>
+          <p style={{
+            color: 'var(--color-muted)',
+            fontSize: 'clamp(0.9rem, 1.2vw, 1rem)',
+            maxWidth: '520px',
+            margin: '0 auto',
+            lineHeight: 1.7,
+          }}>
+            Two proof-of-tone films capturing the spirit and scope of York's journey.
+          </p>
+        </div>
+
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 440px), 1fr))',
+          gap: 'clamp(1.5rem, 3vw, 2.5rem)',
+          maxWidth: '1100px',
+          margin: '0 auto',
+          position: 'relative',
+          zIndex: 1,
+        }}>
+          {/* Video 1 — York Rip Reel Final */}
+          <div style={{
+            border: '1px solid rgba(212,168,67,0.15)',
+            borderRadius: '2px',
+            overflow: 'hidden',
+            backgroundColor: '#000',
+            boxShadow: '0 0 60px rgba(0,0,0,0.4), 0 0 30px rgba(212,168,67,0.02)',
+          }}>
+            <video
+              controls
+              preload="auto"
+              playsInline
+              src="https://res.cloudinary.com/dmhabztbf/video/upload/v1782803449/2026_York_Ripreel_Final_cqyxox.mp4#t=0.1"
+              style={{
+                width: '100%',
+                aspectRatio: '16 / 9',
+                objectFit: 'cover',
+                display: 'block',
+              }}
+            />
+            <div style={{
+              padding: '1rem 1.25rem',
+              borderTop: '1px solid rgba(212,168,67,0.1)',
+            }}>
+              <p style={{
+                fontFamily: 'var(--font-ui)',
+                fontSize: '0.6rem',
+                textTransform: 'uppercase',
+                letterSpacing: '0.25em',
+                color: 'var(--color-gold)',
+                marginBottom: '0.35rem',
+              }}>
+                Rip Reel
+              </p>
+              <p style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: '1rem',
+                color: 'var(--color-paper)',
+                fontStyle: 'italic',
+              }}>
+                York — Final Cut
+              </p>
+            </div>
+          </div>
+
+          {/* Video 2 — Private Viewing */}
+          <div style={{
+            border: '1px solid rgba(212,168,67,0.15)',
+            borderRadius: '2px',
+            overflow: 'hidden',
+            backgroundColor: '#000',
+            boxShadow: '0 0 60px rgba(0,0,0,0.4), 0 0 30px rgba(212,168,67,0.02)',
+          }}>
+            <video
+              controls
+              preload="auto"
+              playsInline
+              src="https://res.cloudinary.com/dmhabztbf/video/upload/v1782803479/2026PRIVATE_VIEWING_-__York__Rip_Reel_av6een.mp4#t=0.1"
+              style={{
+                width: '100%',
+                aspectRatio: '16 / 9',
+                objectFit: 'cover',
+                display: 'block',
+              }}
+            />
+            <div style={{
+              padding: '1rem 1.25rem',
+              borderTop: '1px solid rgba(212,168,67,0.1)',
+            }}>
+              <p style={{
+                fontFamily: 'var(--font-ui)',
+                fontSize: '0.6rem',
+                textTransform: 'uppercase',
+                letterSpacing: '0.25em',
+                color: 'var(--color-gold)',
+                marginBottom: '0.35rem',
+              }}>
+                Private Viewing
+              </p>
+              <p style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: '1rem',
+                color: 'var(--color-paper)',
+                fontStyle: 'italic',
+              }}>
+                York — Rip Reel
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ════════════════════════════════════════════════════════════
           SECTION 2 — VIDEO PLAYER
           ════════════════════════════════════════════════════════════ */}
       <section style={{
