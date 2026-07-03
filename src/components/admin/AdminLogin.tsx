@@ -1,5 +1,7 @@
 import { useState, type CSSProperties } from 'react';
+import { Link } from 'react-router-dom';
 import { supabase, isSupabaseConfigured } from '../../lib/supabase';
+import { logoUrl, filmData } from '../../data/auction';
 import MagneticButton from '../ui/MagneticButton';
 
 /**
@@ -60,11 +62,22 @@ export default function AdminLogin() {
       style={{
         minHeight: '100vh',
         display: 'flex',
+        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '6rem 1.5rem 3rem',
+        gap: '2rem',
+        padding: '4rem 1.5rem 3rem',
       }}
     >
+      {/* Logo */}
+      <Link to="/" aria-label={`${filmData.title} — Home`} style={{ display: 'inline-flex' }}>
+        <img
+          src={logoUrl}
+          alt={filmData.title}
+          style={{ height: '84px', width: 'auto', objectFit: 'contain', filter: 'drop-shadow(0 2px 14px rgba(212,168,67,0.3))' }}
+        />
+      </Link>
+
       <form
         onSubmit={handleSubmit}
         style={{

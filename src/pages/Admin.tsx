@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback, type CSSProperties } from 'react';
+import { Link } from 'react-router-dom';
 import type { Session } from '@supabase/supabase-js';
 import { supabase, isSupabaseConfigured, type BidRow } from '../lib/supabase';
+import { logoUrl, filmData } from '../data/auction';
 import AdminLogin from '../components/admin/AdminLogin';
 
 type SortKey = 'bid_amount' | 'created_at';
@@ -142,33 +144,59 @@ export default function Admin() {
   );
 
   return (
-    <main id="main-content" tabIndex={-1} style={{ minHeight: '100vh', padding: 'clamp(5rem, 10vh, 7rem) clamp(1.25rem, 4vw, 3rem) 4rem' }}>
+    <main id="main-content" tabIndex={-1} style={{ minHeight: '100vh', padding: 'clamp(1.75rem, 5vh, 3rem) clamp(1.25rem, 4vw, 3rem) 4rem' }}>
       <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-        {/* Header */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '1rem', marginBottom: '2rem' }}>
-          <div>
-            <span className="eyebrow" style={{ display: 'block', marginBottom: '0.5rem' }}>Owner Dashboard</span>
-            <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.8rem, 4vw, 2.6rem)', color: 'var(--color-paper)', fontWeight: 500 }}>
-              Binding Bids
-            </h1>
-          </div>
+        {/* Logo bar */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', flexWrap: 'wrap', marginBottom: '2.5rem', paddingBottom: '1.5rem', borderBottom: '1px solid rgba(212,168,67,0.15)' }}>
+          <Link
+            to="/"
+            aria-label={`${filmData.title} — Home`}
+            data-cursor-label="HOME"
+            style={{ display: 'inline-flex', alignItems: 'center' }}
+          >
+            <img
+              src={logoUrl}
+              alt={filmData.title}
+              style={{ height: '72px', width: 'auto', objectFit: 'contain', filter: 'drop-shadow(0 2px 12px rgba(212,168,67,0.25))' }}
+            />
+          </Link>
           <button
             onClick={signOut}
+            onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(212,168,67,0.14)'; e.currentTarget.style.borderColor = 'rgba(212,168,67,0.6)'; e.currentTarget.style.color = 'var(--color-gold)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(212,168,67,0.06)'; e.currentTarget.style.borderColor = 'rgba(212,168,67,0.35)'; e.currentTarget.style.color = 'var(--color-paper)'; }}
             style={{
-              background: 'none',
-              border: '1px solid var(--color-line)',
-              color: 'var(--color-muted)',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              background: 'rgba(212,168,67,0.06)',
+              border: '1px solid rgba(212,168,67,0.35)',
+              color: 'var(--color-paper)',
               borderRadius: '2px',
-              padding: '0.5rem 1.1rem',
+              padding: '0.6rem 1.15rem',
               fontFamily: 'var(--font-ui)',
-              fontSize: '0.6rem',
+              fontSize: '0.62rem',
+              fontWeight: 600,
               textTransform: 'uppercase',
               letterSpacing: '0.15em',
               cursor: 'pointer',
+              transition: 'background 0.3s ease, border-color 0.3s ease, color 0.3s ease',
             }}
           >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+              <path d="M16 17l5-5-5-5" />
+              <path d="M21 12H9" />
+            </svg>
             Sign Out
           </button>
+        </div>
+
+        {/* Title */}
+        <div style={{ marginBottom: '2rem' }}>
+          <span className="eyebrow" style={{ display: 'block', marginBottom: '0.5rem' }}>Owner Dashboard</span>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.8rem, 4vw, 2.6rem)', color: 'var(--color-paper)', fontWeight: 500 }}>
+            Binding Bids
+          </h1>
         </div>
 
         {/* Summary + controls */}

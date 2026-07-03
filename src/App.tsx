@@ -20,12 +20,13 @@ function AppContent() {
   // Initialize Lenis smooth scroll
   useLenis();
 
-  // Scroll to top on route change
-  // (Lenis handles this, but as a safety fallback)
+  // The admin dashboard is an owner-only back office — no marketing chrome
+  // (nav, background audio, or footer). It gets its own logo-only shell.
+  const isAdmin = location.pathname.startsWith('/admin');
 
   return (
     <>
-      <Nav />
+      {!isAdmin && <Nav />}
       <PageTransition>
         <Suspense
           fallback={
@@ -60,7 +61,7 @@ function AppContent() {
           </Routes>
         </Suspense>
       </PageTransition>
-      <Footer />
+      {!isAdmin && <Footer />}
     </>
   );
 }
@@ -112,8 +113,10 @@ export default function App() {
       {/* Custom cursor */}
       <Cursor />
 
-      {/* Preloader */}
-      {!preloaderDone && <Preloader onComplete={() => setPreloaderDone(true)} />}
+      {/* Preloader — skipped on the owner-only admin route */}
+      {!preloaderDone && !window.location.pathname.startsWith('/admin') && (
+        <Preloader onComplete={() => setPreloaderDone(true)} />
+      )}
 
       {/* App content */}
       <AppContent />
