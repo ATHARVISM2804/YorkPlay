@@ -246,3 +246,16 @@ export const socialLinks = {
   instagram: 'https://instagram.com/',
   email: 'hello@yorkscreenplay.com',
 };
+
+// ---- Binding Bid Agreement ----
+// Shown at the top of the bid modal, directly above the input fields.
+export const bidAgreement = {
+  title: 'Binding Bid Agreement',
+  paragraphs: [
+    'By submitting a bid on any screenplay listed on this platform, you acknowledge and agree that your bid constitutes a legally binding offer to purchase or option the screenplay under the terms of your bid.',
+    'If the screenplay owner accepts your bid, a legally enforceable agreement is created between the bidder and the screenplay owner, subject to the execution of any required final transaction documents.',
+    'The screenplay owner is under no obligation to accept any bid and reserves the sole and absolute right to accept, reject, or negotiate any offer for any reason. No sale, option, or transfer of rights shall occur unless and until the screenplay owner formally accepts the bid.',
+    'By placing a bid, you represent that you have the legal authority and financial ability to complete the transaction if your bid is accepted.',
+  ],
+  consentLabel: 'I have read and agree to the Binding Bid Agreement above.',
+};

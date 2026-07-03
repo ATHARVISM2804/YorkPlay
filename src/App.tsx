@@ -12,6 +12,7 @@ const Hook = lazy(() => import('./pages/Hook'));
 const RipReel = lazy(() => import('./pages/RipReel'));
 const ScriptPage = lazy(() => import('./pages/Script'));
 const Contact = lazy(() => import('./pages/Contact'));
+const Admin = lazy(() => import('./pages/Admin'));
 
 function AppContent() {
   const location = useLocation();
@@ -55,6 +56,7 @@ function AppContent() {
             <Route path="/rip-reel" element={<RipReel />} />
             <Route path="/script" element={<ScriptPage />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/admin" element={<Admin />} />
           </Routes>
         </Suspense>
       </PageTransition>
