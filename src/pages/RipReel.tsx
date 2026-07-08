@@ -112,22 +112,31 @@ export default function RipReel() {
 
       {/* Scoped styles */}
       <style>{`
+        /* ── Cast grid ─────────────────────────────── */
         .ripreel-cast-grid {
           display: grid;
           grid-template-columns: 1fr;
-          gap: 1.5rem;
+          gap: 1.25rem;
           max-width: 1100px;
           margin: 0 auto;
+        }
+        @media (min-width: 640px) {
+          .ripreel-cast-grid {
+            gap: 1.5rem;
+          }
         }
         @media (min-width: 768px) {
           .ripreel-cast-grid {
             grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
           }
         }
+
+        /* ── Production details grid ────────────────── */
         .ripreel-prod-grid {
           display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 2rem;
+          grid-template-columns: 1fr 1fr;
+          gap: clamp(1.25rem, 3vw, 2rem);
           max-width: 800px;
           margin: 0 auto;
         }
@@ -136,10 +145,12 @@ export default function RipReel() {
             grid-template-columns: repeat(3, 1fr);
           }
         }
+
+        /* ── Cast card ──────────────────────────────── */
         .ripreel-cast-card {
           border: 1px solid rgba(212,168,67,0.1);
           border-radius: 4px;
-          padding: 2rem;
+          padding: clamp(1.25rem, 4vw, 2rem);
           background: rgba(22,20,18,0.6);
           transition: border-color 0.4s ease, transform 0.4s ease, box-shadow 0.4s ease;
           backdrop-filter: blur(4px);
@@ -148,6 +159,55 @@ export default function RipReel() {
           border-color: rgba(212,168,67,0.35);
           transform: translateY(-4px);
           box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 20px rgba(212,168,67,0.05);
+        }
+
+        /* ── Featured reels video grid ──────────────── */
+        .ripreel-video-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: clamp(1.25rem, 3vw, 2.5rem);
+          max-width: 1100px;
+          margin: 0 auto;
+          position: relative;
+          z-index: 1;
+        }
+        @media (min-width: 700px) {
+          .ripreel-video-grid {
+            grid-template-columns: 1fr 1fr;
+          }
+        }
+
+        /* ── Expedition timeline ────────────────────── */
+        @media (max-width: 480px) {
+          .expedition-timeline {
+            padding-left: 1.25rem;
+          }
+          .timeline-entry::before {
+            left: -1.25rem;
+          }
+        }
+
+        /* ── Hero heading ───────────────────────────── */
+        .ripreel-hero-h1 {
+          font-family: var(--font-display);
+          font-size: clamp(2rem, 7vw + 0.5rem, 5rem);
+          line-height: 1.05;
+          margin-bottom: 1.5rem;
+          color: var(--color-paper);
+        }
+
+        /* ── Closing blockquote ─────────────────────── */
+        .ripreel-closing-quote {
+          font-family: var(--font-display);
+          font-size: clamp(1.1rem, 4vw, 2.2rem);
+          font-weight: 300;
+          font-style: italic;
+          color: var(--color-paper);
+          line-height: 1.45;
+          max-width: 700px;
+          margin: 0 auto 1rem;
+          padding: 0 0.5rem;
+          box-sizing: border-box;
         }
       `}</style>
 
@@ -207,13 +267,7 @@ export default function RipReel() {
             The Expedition
           </span>
 
-          <h1 style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(2.8rem, 6vw, 5rem)',
-            lineHeight: 1.05,
-            marginBottom: '1.5rem',
-            color: 'var(--color-paper)',
-          }}>
+          <h1 className="ripreel-hero-h1">
             Into the unknown. Into the unwritten.
           </h1>
 
@@ -277,15 +331,7 @@ export default function RipReel() {
           </p>
         </div>
 
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 440px), 1fr))',
-          gap: 'clamp(1.5rem, 3vw, 2.5rem)',
-          maxWidth: '1100px',
-          margin: '0 auto',
-          position: 'relative',
-          zIndex: 1,
-        }}>
+        <div className="ripreel-video-grid">
           {/* Video 1 — York Rip Reel Final */}
           <div style={{
             border: '1px solid rgba(212,168,67,0.15)',
@@ -682,16 +728,7 @@ export default function RipReel() {
           margin: '0 auto 2.5rem',
         }} />
 
-        <blockquote style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(1.4rem, 3vw, 2.2rem)',
-          fontWeight: 300,
-          fontStyle: 'italic',
-          color: 'var(--color-paper)',
-          lineHeight: 1.4,
-          maxWidth: '700px',
-          margin: '0 auto 1rem',
-        }}>
+        <blockquote className="ripreel-closing-quote">
           "They called it the Corps of Discovery. But the greatest discovery was the man they refused to see."
         </blockquote>
 

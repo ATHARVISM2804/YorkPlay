@@ -95,6 +95,8 @@ export default function Nav() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
+        maxWidth: '100vw',
+          overflow: 'hidden',
           transition: 'background-color 0.5s ease, backdrop-filter 0.5s ease',
           backgroundColor: scrolled ? 'rgba(11,10,8,0.88)' : 'transparent',
           backdropFilter: scrolled ? 'blur(12px)' : 'none',
@@ -201,7 +203,7 @@ export default function Nav() {
         </div>
 
         {/* Right Action Group */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', zIndex: 1003 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(0.5rem, 2vw, 1rem)', zIndex: 1003 }}>
           {/* Audio Toggle Button - Creative Waveform */}
           <button
             onClick={toggleAudio}
@@ -211,13 +213,14 @@ export default function Nav() {
               border: isPlaying ? '1px solid rgba(212,168,67,0.4)' : '1px solid var(--color-line)',
               color: isPlaying ? 'var(--color-gold)' : 'var(--color-muted)',
               borderRadius: '20px',
-              padding: '0.4rem 0.6rem',
+              padding: '0.4rem 0.5rem',
               cursor: 'pointer',
               transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               gap: '6px',
+              flexShrink: 0,
               boxShadow: isPlaying ? '0 0 15px rgba(212,168,67,0.15)' : 'none',
             }}
             aria-label={isPlaying ? "Mute Background Audio" : "Play Background Audio"}
@@ -289,7 +292,7 @@ export default function Nav() {
               background: 'linear-gradient(135deg, rgba(212,168,67,0.15) 0%, rgba(212,168,67,0.05) 100%)',
               border: '1px solid rgba(212,168,67,0.5)',
               borderRadius: '20px',
-              padding: '0.4rem 1rem',
+              padding: '0.4rem clamp(0.5rem, 2vw, 1rem)',
               fontFamily: 'var(--font-ui)',
               fontSize: '0.6rem',
               fontWeight: 700,
@@ -300,8 +303,10 @@ export default function Nav() {
               display: 'flex',
               alignItems: 'center',
               gap: '6px',
+              flexShrink: 0,
               transition: 'all 0.3s ease',
               textDecoration: 'none',
+              whiteSpace: 'nowrap',
               boxShadow: '0 0 15px rgba(212,168,67,0.1)',
             }}
             onMouseEnter={(e) => {
@@ -415,6 +420,7 @@ export default function Nav() {
         }
         @media (max-width: 480px) {
           .focus-btn-text { display: none !important; }
+          .hide-on-mobile { display: none !important; }
         }
         @keyframes livePulse {
           0%, 100% { opacity: 1; transform: scale(1); }

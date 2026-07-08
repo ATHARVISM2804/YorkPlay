@@ -353,15 +353,10 @@ export default function Hook() {
           {creators.map((creator, idx) => (
             <div
               key={creator.name}
-              className="focus-highlight-element"
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'minmax(200px, 280px) 1fr',
-                gap: 'clamp(1.5rem, 3vw, 3rem)',
-                alignItems: 'start',
-              }}
+              className="focus-highlight-element storyteller-grid"
             >
               {/* Individual photo */}
+              <div className="storyteller-photo">
               <RevealImage direction={idx === 0 ? 'left' : 'right'}>
                 <img
                   src={creator.photoUrl}
@@ -381,6 +376,7 @@ export default function Hook() {
                   }}
                 />
               </RevealImage>
+              </div>
 
               {/* Bio */}
               <div style={{ paddingTop: '0.5rem' }}>

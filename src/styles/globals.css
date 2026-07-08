@@ -61,6 +61,7 @@ html {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   scroll-behavior: auto; /* Lenis handles smooth scroll */
+  overflow-x: hidden; /* prevent right-side strip on mobile */
 }
 
 body {
@@ -431,6 +432,30 @@ body.focus-mode-active .focus-highlight-element {
   opacity: 0.4;
 }
 
+
+/* ============================================
+   STORYTELLERS SECTION — RESPONSIVE GRID
+   ============================================ */
+
+.storyteller-grid {
+  display: grid;
+  grid-template-columns: minmax(200px, 280px) 1fr;
+  gap: clamp(1.5rem, 3vw, 3rem);
+  align-items: start;
+}
+
+@media (max-width: 600px) {
+  .storyteller-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .storyteller-grid .storyteller-photo {
+    width: 100%;
+    max-width: 280px;
+    margin-inline: auto;
+  }
+}
 
 /* ============================================
    EXPEDITION TIMELINE
