@@ -47,7 +47,7 @@ export interface Creator {
 export interface Contact {
   name: string;
   role: string;
-  email: string;
+  email?: string;
   phone?: string;
   social?: { platform: string; url: string }[];
 }
@@ -242,9 +242,8 @@ export const logoUrl: string = 'https://res.cloudinary.com/dmhabztbf/image/uploa
 export const audioUrl: string = 'https://res.cloudinary.com/dmhabztbf/video/upload/v1782803855/The_Last_of_the_Mohicans_-_Promentory_Main_Theme_rl1fqk.mp3'; // The Last of the Mohicans — Promentory Main Theme
 
 export const socialLinks = {
-  twitter: 'https://x.com/',
-  instagram: 'https://instagram.com/',
-  email: 'hello@yorkscreenplay.com',
+  twitter: 'https://x.com/JonStewartIL',
+  email: 'jonalanstewart@aol.com',
 };
 
 // ---- Binding Bid Agreement ----

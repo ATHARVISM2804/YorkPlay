@@ -169,16 +169,6 @@ export default function Footer() {
               >
                 Twitter / X
               </a>
-              <a
-                href={socialLinks.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={linkStyle}
-                onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--color-gold)'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--color-muted)'; }}
-              >
-                Instagram
-              </a>
             </div>
           </div>
         </div>

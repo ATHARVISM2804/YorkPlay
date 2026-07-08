@@ -1,6 +1,6 @@
 import { useState, useRef, useLayoutEffect } from 'react';
 import { gsap } from 'gsap';
-import { contacts, auctionConfig, socialLinks } from '../data/auction';
+import { contacts, auctionConfig, socialLinks, type Contact } from '../data/auction';
 import contactBg from '../assets/contact_bg.png';
 import MagneticButton from '../components/ui/MagneticButton';
 import Countdown from '../components/ui/Countdown';
@@ -100,6 +100,14 @@ export default function Contact() {
     fontWeight: 500,
     fontFamily: 'var(--font-ui)',
   };
+
+  const displayContacts: Contact[] = [
+    {
+      name: 'Shawn West',
+      role: 'The Wayne Agency',
+      phone: '+1 (509) 981-6883',
+    },
+  ];
 
   return (
     <main id="main-content" tabIndex={-1} ref={containerRef}>
@@ -275,7 +283,7 @@ export default function Contact() {
             </h3>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-              {contacts.map((contact) => (
+              {displayContacts.map((contact) => (
                 <div key={contact.name} className="contact-card">
                   <h4 style={{
                     fontFamily: 'var(--font-display)',
@@ -296,17 +304,19 @@ export default function Contact() {
                   }}>
                     {contact.role}
                   </p>
-                  <a
-                    href={`mailto:${contact.email}`}
-                    style={{
-                      fontSize: '0.875rem',
-                      color: 'var(--color-paper)',
-                      display: 'block',
-                      marginBottom: '0.25rem',
-                    }}
-                  >
-                    {contact.email}
-                  </a>
+                  {contact.email && (
+                    <a
+                      href={`mailto:${contact.email}`}
+                      style={{
+                        fontSize: '0.875rem',
+                        color: 'var(--color-paper)',
+                        display: 'block',
+                        marginBottom: '0.25rem',
+                      }}
+                    >
+                      {contact.email}
+                    </a>
+                  )}
                   {contact.phone && (
                     <p style={{ fontSize: '0.875rem', color: 'var(--color-muted)' }}>{contact.phone}</p>
                   )}

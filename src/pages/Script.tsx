@@ -1,8 +1,7 @@
-import { useState, useRef, useLayoutEffect } from 'react';
+import { useRef, useLayoutEffect } from 'react';
 import { gsap } from 'gsap';
 import { filmData, scriptData } from '../data/auction';
 import scriptBgImage from '../assets/script_bg.png';
-import MagneticButton from '../components/ui/MagneticButton';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 
 /**
@@ -12,7 +11,6 @@ import { useReducedMotion } from '../hooks/useReducedMotion';
  * Section 2: The vault card with context
  */
 export default function Script() {
-  const [termsAccepted, setTermsAccepted] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
   const vaultRef = useRef<HTMLDivElement>(null);
@@ -366,70 +364,6 @@ export default function Script() {
                     {line}
                   </div>
                 ))}
-                {/* Fade overlay */}
-                <div style={{
-                  position: 'absolute',
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  height: '75%',
-                  background: 'linear-gradient(to top, #161412 15%, transparent 100%)',
-                  pointerEvents: 'none',
-                }} />
-              </div>
-
-              {/* Terms checkbox */}
-              <div style={{
-                padding: '1rem 1.5rem',
-                backgroundColor: 'rgba(0,0,0,0.25)',
-                borderTop: '1px solid rgba(255,255,255,0.05)',
-                display: 'flex',
-                alignItems: 'flex-start',
-                gap: '0.75rem',
-              }}>
-                <input
-                  type="checkbox"
-                  id="accept-terms"
-                  checked={termsAccepted}
-                  onChange={(e) => setTermsAccepted(e.target.checked)}
-                  style={{
-                    width: '14px',
-                    height: '14px',
-                    marginTop: '2px',
-                    accentColor: 'var(--color-gold)',
-                    cursor: 'pointer',
-                    flexShrink: 0,
-                  }}
-                />
-                <label
-                  htmlFor="accept-terms"
-                  style={{
-                    fontSize: '0.7rem',
-                    color: termsAccepted ? 'var(--color-gold)' : 'var(--color-muted)',
-                    lineHeight: 1.5,
-                    cursor: 'pointer',
-                    transition: 'color 0.3s ease',
-                  }}
-                >
-                  {scriptData.viewingTerms}
-                </label>
-              </div>
-
-              {/* Read Script Button */}
-              <div style={{
-                padding: '0 1.5rem 1.5rem',
-                backgroundColor: 'rgba(0,0,0,0.25)',
-                textAlign: 'center',
-              }}>
-                <MagneticButton
-                  href={scriptData.googleDocsUrl}
-                  target="_blank"
-                  variant="primary"
-                  disabled={!termsAccepted}
-                  id="read-script-btn"
-                >
-                  Unlock Manuscript
-                </MagneticButton>
               </div>
             </div>
           </div>

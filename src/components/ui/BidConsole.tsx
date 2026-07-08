@@ -87,7 +87,7 @@ export default function BidConsole() {
           letterSpacing: '0.02em',
         }}
       >
-        {formatCurrency(currentBid)}
+        $XXX,000
       </div>
 
       {/* Countdown */}
@@ -105,7 +105,7 @@ export default function BidConsole() {
         </MagneticButton>
 
         <p style={{ fontSize: '0.6875rem', color: 'var(--color-muted)', marginTop: '1rem', lineHeight: 1.5 }}>
-          Minimum bid {formatCurrency(minimumNextBid)}. {auctionConfig.termsNote}
+          {auctionConfig.termsNote}
         </p>
       </div>
 
