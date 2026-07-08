@@ -24,6 +24,9 @@ export function useLenis() {
 
     lenisRef.current = lenis;
 
+    // Expose globally so ScrollToTop can call lenis.scrollTo(0) on route change
+    (window as Window & { __lenis?: Lenis }).__lenis = lenis;
+
     // Integrate Lenis with GSAP ticker
     function raf(time: number) {
       lenis.raf(time);
@@ -34,6 +37,7 @@ export function useLenis() {
     return () => {
       lenis.destroy();
       lenisRef.current = null;
+      delete (window as Window & { __lenis?: Lenis }).__lenis;
     };
   }, [prefersReducedMotion]);
 

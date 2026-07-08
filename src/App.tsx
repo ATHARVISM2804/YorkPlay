@@ -4,6 +4,7 @@ import Nav from './components/layout/Nav';
 import Footer from './components/layout/Footer';
 import PageTransition from './components/layout/PageTransition';
 import Preloader from './components/layout/Preloader';
+import ScrollToTop from './components/layout/ScrollToTop';
 import Cursor from './components/ui/Cursor';
 import { useLenis } from './hooks/useLenis';
 
@@ -26,6 +27,7 @@ function AppContent() {
 
   return (
     <>
+      <ScrollToTop />
       {!isAdmin && <Nav />}
       <PageTransition>
         <Suspense
