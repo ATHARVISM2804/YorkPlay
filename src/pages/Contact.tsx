@@ -1,6 +1,6 @@
 import { useState, useRef, useLayoutEffect } from 'react';
 import { gsap } from 'gsap';
-import { contacts, auctionConfig, socialLinks, type Contact } from '../data/auction';
+import { auctionConfig, socialLinks, type Contact } from '../data/auction';
 import contactBg from '../assets/contact_bg.png';
 import MagneticButton from '../components/ui/MagneticButton';
 import Countdown from '../components/ui/Countdown';
