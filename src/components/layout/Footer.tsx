@@ -100,17 +100,31 @@ export default function Footer() {
               Navigate
             </h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-              {navLinks.map(link => (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  style={linkStyle}
-                  onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--color-gold)'; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--color-muted)'; }}
-                >
-                  {link.label}
-                </Link>
-              ))}
+              {navLinks.map(link =>
+                link.external ? (
+                  <a
+                    key={link.path}
+                    href={link.path}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={linkStyle}
+                    onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--color-gold)'; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--color-muted)'; }}
+                  >
+                    {link.label}
+                  </a>
+                ) : (
+                  <Link
+                    key={link.path}
+                    to={link.path}
+                    style={linkStyle}
+                    onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--color-gold)'; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--color-muted)'; }}
+                  >
+                    {link.label}
+                  </Link>
+                )
+              )}
             </div>
           </div>
 

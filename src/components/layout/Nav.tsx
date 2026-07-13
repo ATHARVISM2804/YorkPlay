@@ -136,24 +136,21 @@ export default function Nav() {
           className="nav-desktop"
         >
           {navLinks.map(link => {
-            const isActive = location.pathname === link.path;
-            return (
-              <Link
-                key={link.path}
-                to={link.path}
-                style={{
-                  fontFamily: 'var(--font-ui)',
-                  fontSize: '0.7rem',
-                  fontWeight: 500,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.18em',
-                  color: isActive ? 'var(--color-paper)' : 'var(--color-muted)',
-                  textDecoration: 'none',
-                  position: 'relative',
-                  paddingBottom: '4px',
-                  transition: 'color 0.3s ease',
-                }}
-              >
+            const isActive = !link.external && location.pathname === link.path;
+            const sharedStyle = {
+              fontFamily: 'var(--font-ui)',
+              fontSize: '0.7rem',
+              fontWeight: 500,
+              textTransform: 'uppercase' as const,
+              letterSpacing: '0.18em',
+              color: isActive ? 'var(--color-paper)' : 'var(--color-muted)',
+              textDecoration: 'none',
+              position: 'relative' as const,
+              paddingBottom: '4px',
+              transition: 'color 0.3s ease',
+            };
+            const children = (
+              <>
                 {link.label}
                 {isActive && (
                   <span
@@ -168,6 +165,28 @@ export default function Nav() {
                     }}
                   />
                 )}
+              </>
+            );
+            if (link.external) {
+              return (
+                <a
+                  key={link.path}
+                  href={link.path}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={sharedStyle}
+                >
+                  {children}
+                </a>
+              );
+            }
+            return (
+              <Link
+                key={link.path}
+                to={link.path}
+                style={sharedStyle}
+              >
+                {children}
               </Link>
             );
           })}
@@ -383,27 +402,45 @@ export default function Nav() {
           transition: 'opacity 0.4s ease',
         }}
       >
-        {navLinks.map((link, i) => (
-          <Link
-            key={link.path}
-            to={link.path}
-            tabIndex={menuOpen ? 0 : -1}
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(2rem, 6vw, 3.5rem)',
-              fontWeight: 400,
-              fontStyle: 'italic',
-              color: location.pathname === link.path ? 'var(--color-gold)' : 'var(--color-paper)',
-              textDecoration: 'none',
-              transform: menuOpen ? 'translateY(0)' : 'translateY(30px)',
-              opacity: menuOpen ? 1 : 0,
-              transition: `transform 0.5s cubic-bezier(0.16,1,0.3,1) ${i * 0.08}s, opacity 0.4s ease ${i * 0.08}s, color 0.3s ease`,
-            }}
-            onClick={() => setMenuOpen(false)}
-          >
-            {link.label}
-          </Link>
-        ))}
+        {navLinks.map((link, i) => {
+          const sharedStyle = {
+            fontFamily: 'var(--font-display)',
+            fontSize: 'clamp(2rem, 6vw, 3.5rem)',
+            fontWeight: 400,
+            fontStyle: 'italic' as const,
+            color: (!link.external && location.pathname === link.path) ? 'var(--color-gold)' : 'var(--color-paper)',
+            textDecoration: 'none',
+            transform: menuOpen ? 'translateY(0)' : 'translateY(30px)',
+            opacity: menuOpen ? 1 : 0,
+            transition: `transform 0.5s cubic-bezier(0.16,1,0.3,1) ${i * 0.08}s, opacity 0.4s ease ${i * 0.08}s, color 0.3s ease`,
+          };
+          if (link.external) {
+            return (
+              <a
+                key={link.path}
+                href={link.path}
+                target="_blank"
+                rel="noopener noreferrer"
+                tabIndex={menuOpen ? 0 : -1}
+                style={sharedStyle}
+                onClick={() => setMenuOpen(false)}
+              >
+                {link.label}
+              </a>
+            );
+          }
+          return (
+            <Link
+              key={link.path}
+              to={link.path}
+              tabIndex={menuOpen ? 0 : -1}
+              style={sharedStyle}
+              onClick={() => setMenuOpen(false)}
+            >
+              {link.label}
+            </Link>
+          );
+        })}
 
         {auctionConfig.isLive && (
           <div style={{ marginTop: '1rem' }}>

@@ -74,6 +74,7 @@ export interface ScriptData {
 export interface NavLink {
   label: string;
   path: string;
+  external?: boolean;
 }
 
 export interface TimelineEntry {
@@ -234,6 +235,7 @@ export const navLinks: NavLink[] = [
   { label: 'The Beginning', path: '/' },
   { label: 'The Expedition', path: '/rip-reel' },
   { label: 'The Manuscript', path: '/script' },
+  { label: 'Novel', path: 'https://docs.google.com/document/d/1XfN2amKzwd6WVOwn2wZX9dVUB-RqW7jo/edit?usp=drivesdk&ouid=116247947470349856505&rtpof=true&sd=true', external: true },
   { label: 'Correspondence', path: '/contact' },
 ];
 
