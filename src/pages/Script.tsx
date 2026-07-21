@@ -2,6 +2,7 @@ import { useRef, useLayoutEffect } from 'react';
 import { gsap } from 'gsap';
 import { filmData, scriptData } from '../data/auction';
 import scriptBgImage from '../assets/script_bg.png';
+import scriptPdf from '../assets/York Second Draft 3-4-2020 Script.pdf';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 
 /**
@@ -52,6 +53,29 @@ export default function Script() {
           border-top: 1px solid rgba(212,168,67,0.15);
           padding-top: 2rem;
           margin-top: 2rem;
+        }
+        .script-read-cta {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.6rem;
+          max-width: 100%;
+          padding: 0.95rem clamp(1.25rem, 5vw, 2.25rem);
+          border: 1px solid rgba(212,168,67,0.45);
+          border-radius: 2px;
+          background: rgba(212,168,67,0.06);
+          color: var(--color-gold);
+          font-family: var(--font-ui);
+          font-size: 0.7rem;
+          text-transform: uppercase;
+          letter-spacing: 0.22em;
+          text-decoration: none;
+          transition: background 0.4s ease, border-color 0.4s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s ease;
+        }
+        .script-read-cta:hover {
+          background: rgba(212,168,67,0.14);
+          border-color: rgba(212,168,67,0.8);
+          transform: translateY(-2px);
+          box-shadow: 0 12px 32px rgba(0,0,0,0.5), 0 0 24px rgba(212,168,67,0.12);
         }
         .script-vault-grid {
           display: grid;
@@ -156,6 +180,17 @@ export default function Script() {
             of the only man who wasn't free. This manuscript is more than a screenplay—it's
             a visceral, emotional journey into the heart of the American frontier.
           </p>
+
+          {/* Read the script CTA */}
+          <a
+            href={scriptPdf}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="script-read-cta"
+          >
+            Read the Complete Script
+            <span aria-hidden="true" style={{ fontSize: '0.9em' }}>↗</span>
+          </a>
 
           {/* Stats Row */}
           <div className="script-stats-grid" style={{ maxWidth: '420px', margin: '0 auto' }}>
@@ -364,6 +399,34 @@ export default function Script() {
                     {line}
                   </div>
                 ))}
+
+                {/* Fade out into the card footer */}
+                <div style={{
+                  position: 'absolute',
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  height: '90px',
+                  background: 'linear-gradient(180deg, transparent 0%, #161412 85%)',
+                  pointerEvents: 'none',
+                }} />
+              </div>
+
+              {/* Card footer — open the full screenplay */}
+              <div style={{
+                padding: '1.25rem 1.5rem 1.75rem',
+                borderTop: '1px solid rgba(255,255,255,0.05)',
+                textAlign: 'center',
+              }}>
+                <a
+                  href={scriptPdf}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="script-read-cta"
+                >
+                  Read the Complete Script
+                  <span aria-hidden="true" style={{ fontSize: '0.9em' }}>↗</span>
+                </a>
               </div>
             </div>
           </div>
