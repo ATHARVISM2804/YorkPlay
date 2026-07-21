@@ -10,8 +10,22 @@ import MagneticButton from '../components/ui/MagneticButton';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 import Viewfinder from '../components/ui/Viewfinder';
 import ScrollHighlightText from '../components/ui/ScrollHighlightText';
+import { useSeo } from '../lib/seo';
 
 gsap.registerPlugin(ScrollTrigger);
+
+// Module scope keeps the object identity stable across renders
+const homeJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': 'https://yorkscreenplay.com/#webpage',
+  url: 'https://yorkscreenplay.com/',
+  name: 'YORK — An Untold American Epic | Original Screenplay',
+  description:
+    'YORK: an original feature screenplay about the enslaved man who crossed America with Lewis & Clark. Read the script, watch the rip reel, and place a bid.',
+  isPartOf: { '@id': 'https://yorkscreenplay.com/#website' },
+  mainEntity: { '@id': 'https://yorkscreenplay.com/#screenplay' },
+};
 
 /**
  * PAGE 1 — THE BEGINNING (Landing Page)
@@ -19,6 +33,14 @@ gsap.registerPlugin(ScrollTrigger);
  * Six sections: Hero, Narrative, Bid Console, Creators, Why This Story, Closing CTA
  */
 export default function Hook() {
+  useSeo({
+    title: 'YORK — An Untold American Epic | Original Screenplay',
+    description:
+      'YORK: an original feature screenplay about the enslaved man who crossed America with Lewis & Clark and came home to chains. Read the script, watch the rip reel, place a bid.',
+    path: '/',
+    jsonLd: homeJsonLd,
+  });
+
   const [heroIndex, setHeroIndex] = useState(0);
   const heroRef = useRef<HTMLDivElement>(null);
   const heroImgRef = useRef<HTMLDivElement>(null);
@@ -188,8 +210,11 @@ export default function Hook() {
               key={idx}
               src={url}
               alt=""
-              fetchPriority={idx === 0 ? "high" : "auto"}
+              fetchPriority={idx === 0 ? "high" : "low"}
               decoding={idx === 0 ? "sync" : "async"}
+              // Only the first slide is the LCP element; the rest must not
+              // compete for bandwidth during the initial paint.
+              loading={idx === 0 ? "eager" : "lazy"}
               style={{
                 position: 'absolute',
                 inset: 0,

@@ -6,8 +6,23 @@ import { ripReelData, filmData, timelineEntries } from '../data/auction';
 import ripReelBg from '../assets/ripreel_bg.png';
 import MagneticButton from '../components/ui/MagneticButton';
 import { useReducedMotion } from '../hooks/useReducedMotion';
+import { useSeo } from '../lib/seo';
 
 gsap.registerPlugin(ScrollTrigger);
+
+// Module scope keeps the object identity stable across renders
+const ripReelJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'VideoObject',
+  name: 'YORK — Rip Reel',
+  description:
+    'A proof of tone for the YORK screenplay, capturing the vast American wilderness and the intimate human story at the heart of York’s journey with Lewis & Clark.',
+  thumbnailUrl: 'https://i.ytimg.com/vi/AuSne7VC404/maxresdefault.jpg',
+  embedUrl: 'https://www.youtube.com/embed/AuSne7VC404',
+  uploadDate: '2026-01-01',
+  inLanguage: 'en-US',
+  publisher: { '@id': 'https://yorkscreenplay.com/#organization' },
+};
 
 // Cast & crew data for the "movie credits" section
 const castCredits = [
@@ -32,6 +47,15 @@ const productionDetails = [
  * cast/character cards, production details, and a closing CTA.
  */
 export default function RipReel() {
+  useSeo({
+    title: 'The Expedition — YORK Rip Reel & Proof of Tone',
+    description:
+      'Watch the YORK rip reel: a proof of tone for the screenplay, from the vast American wilderness to the intimate story of the man Lewis & Clark refused to free.',
+    path: '/rip-reel',
+    type: 'video.other',
+    jsonLd: ripReelJsonLd,
+  });
+
   const containerRef = useRef<HTMLDivElement>(null);
   const frameRef = useRef<HTMLDivElement>(null);
   const timelineRef = useRef<HTMLDivElement>(null);

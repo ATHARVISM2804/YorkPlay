@@ -4,6 +4,19 @@ import { filmData, scriptData } from '../data/auction';
 import scriptBgImage from '../assets/script_bg.png';
 import scriptPdf from '../assets/York Second Draft 3-4-2020 Script.pdf';
 import { useReducedMotion } from '../hooks/useReducedMotion';
+import { useSeo } from '../lib/seo';
+
+// Module scope keeps the object identity stable across renders
+const scriptJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  url: 'https://yorkscreenplay.com/script',
+  name: 'Read the YORK Screenplay — 132-Page Final Draft',
+  description:
+    'Read the complete YORK screenplay: a 132-page final draft historical epic about York, the enslaved man who crossed the continent with Lewis & Clark.',
+  isPartOf: { '@id': 'https://yorkscreenplay.com/#website' },
+  mainEntity: { '@id': 'https://yorkscreenplay.com/#screenplay' },
+};
 
 /**
  * PAGE 3 — THE MANUSCRIPT
@@ -12,6 +25,15 @@ import { useReducedMotion } from '../hooks/useReducedMotion';
  * Section 2: The vault card with context
  */
 export default function Script() {
+  useSeo({
+    title: 'Read the YORK Screenplay — 132-Page Final Draft',
+    description:
+      'Read the complete YORK screenplay in full. A 132-page final-draft historical epic following York, the first African American to cross the continent with Lewis & Clark.',
+    path: '/script',
+    type: 'article',
+    jsonLd: scriptJsonLd,
+  });
+
   const containerRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
   const vaultRef = useRef<HTMLDivElement>(null);

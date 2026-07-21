@@ -4,6 +4,7 @@ import type { Session } from '@supabase/supabase-js';
 import { supabase, isSupabaseConfigured, type BidRow } from '../lib/supabase';
 import { logoUrl, filmData } from '../data/auction';
 import AdminLogin from '../components/admin/AdminLogin';
+import { useSeo } from '../lib/seo';
 
 type SortKey = 'bid_amount' | 'created_at';
 
@@ -34,6 +35,13 @@ function formatDate(iso: string): string {
  * directly.
  */
 export default function Admin() {
+  useSeo({
+    title: 'Bid Dashboard — York Screenplay',
+    description: 'Owner-only bid dashboard.',
+    path: '/admin',
+    noindex: true,
+  });
+
   const [session, setSession] = useState<Session | null>(null);
   const [checkingSession, setCheckingSession] = useState(true);
   const [bids, setBids] = useState<BidRow[]>([]);

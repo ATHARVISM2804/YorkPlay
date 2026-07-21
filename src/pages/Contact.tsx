@@ -5,6 +5,19 @@ import contactBg from '../assets/contact_bg.png';
 import MagneticButton from '../components/ui/MagneticButton';
 import Countdown from '../components/ui/Countdown';
 import { useReducedMotion } from '../hooks/useReducedMotion';
+import { useSeo } from '../lib/seo';
+
+// Module scope keeps the object identity stable across renders
+const contactJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ContactPage',
+  url: 'https://yorkscreenplay.com/contact',
+  name: 'Contact — YORK Screenplay',
+  description:
+    'Contact the writers and literary representation behind the YORK screenplay for rights, bids and production enquiries.',
+  isPartOf: { '@id': 'https://yorkscreenplay.com/#website' },
+  about: { '@id': 'https://yorkscreenplay.com/#screenplay' },
+};
 
 interface ContactFormState {
   name: string;
@@ -18,6 +31,14 @@ interface ContactFormState {
  * Cinematic contact page with hero background, form, and direct contacts.
  */
 export default function Contact() {
+  useSeo({
+    title: 'Contact — Acquire the YORK Screenplay',
+    description:
+      'Reach the writers and literary representation behind YORK. Enquiries for rights, private bids, production and press on the 132-page historical epic screenplay.',
+    path: '/contact',
+    jsonLd: contactJsonLd,
+  });
+
   const containerRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
 
