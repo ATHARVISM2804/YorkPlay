@@ -356,13 +356,13 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
       <p
         style={{
           fontFamily: "'Lora', Georgia, serif",
-          fontSize: '0.75rem',
-          color: '#7A6A52',
+          fontSize: '0.8rem',
+          color: '#C9B896',
           letterSpacing: '0.08em',
           maxWidth: '400px',
           textAlign: 'center',
           lineHeight: 1.6,
-          opacity: showNarrative ? 0.5 : 0,
+          opacity: showNarrative ? 0.85 : 0,
           transform: showNarrative ? 'translateY(0)' : 'translateY(8px)',
           transition: 'opacity 0.6s ease 0.2s, transform 0.6s ease 0.2s',
         }}
