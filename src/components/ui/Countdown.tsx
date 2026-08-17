@@ -76,8 +76,19 @@ export default function Countdown({ targetDate, compact = false, className = '' 
   );
 }
 
+// Length of one auction cycle. When a deadline passes, the countdown rolls
+// forward by whole cycles so it stays perpetually live and never sticks at zero.
+const CYCLE_MS = 30 * 24 * 60 * 60 * 1000;
+
 function calculateTimeLeft(targetDate: string): TimeLeft {
-  const diff = Math.max(0, new Date(targetDate).getTime() - Date.now());
+  const now = Date.now();
+  let target = new Date(targetDate).getTime();
+  if (target <= now) {
+    // Advance by at least one full cycle so the target is always in the future.
+    const cyclesPassed = Math.floor((now - target) / CYCLE_MS) + 1;
+    target += cyclesPassed * CYCLE_MS;
+  }
+  const diff = Math.max(0, target - now);
   return {
     days: Math.floor(diff / (1000 * 60 * 60 * 24)),
     hours: Math.floor((diff / (1000 * 60 * 60)) % 24),

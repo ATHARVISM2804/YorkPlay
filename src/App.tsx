@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Nav from './components/layout/Nav';
 import Footer from './components/layout/Footer';
 import PageTransition from './components/layout/PageTransition';
-import Preloader from './components/layout/Preloader';
 import ScrollToTop from './components/layout/ScrollToTop';
 import Cursor from './components/ui/Cursor';
 import { useLenis } from './hooks/useLenis';
@@ -69,7 +68,6 @@ function AppContent() {
 }
 
 export default function App() {
-  const [preloaderDone, setPreloaderDone] = useState(false);
   const [focusMode, setFocusMode] = useState(false);
 
   // Monitor custom event for toggling focus mode
@@ -114,11 +112,6 @@ export default function App() {
 
       {/* Custom cursor */}
       <Cursor />
-
-      {/* Preloader — skipped on the owner-only admin route */}
-      {!preloaderDone && !window.location.pathname.startsWith('/admin') && (
-        <Preloader onComplete={() => setPreloaderDone(true)} />
-      )}
 
       {/* App content */}
       <AppContent />

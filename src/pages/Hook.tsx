@@ -2,15 +2,18 @@ import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { filmData, heroMediaUrls, creators, whyPoints } from '../data/auction';
+import { filmData, heroMediaUrls, creators, whyPoints, ripReelData, scriptData } from '../data/auction';
 import RevealText from '../components/ui/RevealText';
 import RevealImage from '../components/ui/RevealImage';
 import BidConsole from '../components/ui/BidConsole';
 import MagneticButton from '../components/ui/MagneticButton';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 import Viewfinder from '../components/ui/Viewfinder';
-import ScrollHighlightText from '../components/ui/ScrollHighlightText';
 import { useSeo } from '../lib/seo';
+import scriptPdf from '../assets/York Second Draft 3-4-2020 Script.pdf';
+
+// Derive the YouTube video id from the configured embed URL
+const YT_VIDEO_ID = ripReelData.videoUrl.split('/embed/')[1]?.split(/[?&]/)[0] ?? '';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -42,6 +45,7 @@ export default function Hook() {
   });
 
   const [heroIndex, setHeroIndex] = useState(0);
+  const [videoPlaying, setVideoPlaying] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
   const heroImgRef = useRef<HTMLDivElement>(null);
 
@@ -312,7 +316,7 @@ export default function Hook() {
         </button>
       </section>
 
-      {/* ======== SECTION B — THE NARRATIVE (Scroll Highlight) ======== */}
+      {/* ======== SECTION B — THE REEL (Video) ======== */}
       <section
         id="logline-section"
         style={{
@@ -323,8 +327,21 @@ export default function Hook() {
           position: 'relative',
         }}
       >
+        {/* Ambient warm glow behind the frame */}
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: 'min(1100px, 92%)',
+          height: '80%',
+          background: 'radial-gradient(ellipse, rgba(212,168,67,0.06) 0%, transparent 65%)',
+          pointerEvents: 'none',
+          zIndex: 0,
+        }} />
+
         {/* Decorative compass rose SVG */}
-        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" style={{ marginBottom: '2rem', opacity: 0.25 }}>
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" style={{ marginBottom: '1.75rem', opacity: 0.25, position: 'relative', zIndex: 1 }}>
           <circle cx="20" cy="20" r="18" stroke="var(--color-gold)" strokeWidth="0.5" />
           <circle cx="20" cy="20" r="12" stroke="var(--color-gold)" strokeWidth="0.5" />
           <path d="M20 2L20 38M2 20L38 20" stroke="var(--color-gold)" strokeWidth="0.5" />
@@ -332,10 +349,338 @@ export default function Hook() {
           <circle cx="20" cy="20" r="2" fill="var(--color-gold)" fillOpacity="0.5" />
         </svg>
 
-        <div style={{ maxWidth: '860px' }}>
-          <ScrollHighlightText className="editorial-pitch focus-highlight-element">
-            {filmData.expandedPitch}
-          </ScrollHighlightText>
+        <span className="eyebrow" style={{ display: 'block', marginBottom: '0.9rem', position: 'relative', zIndex: 1 }}>
+          The Proof of Tone
+        </span>
+        <h2 style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: 'clamp(1.9rem, 4vw, 3rem)',
+          lineHeight: 1.1,
+          textAlign: 'center',
+          color: 'var(--color-paper)',
+          marginBottom: '0.9rem',
+          maxWidth: '720px',
+          position: 'relative',
+          zIndex: 1,
+        }}>
+          See the frontier before you read it.
+        </h2>
+        <p style={{
+          color: 'var(--color-muted)',
+          fontSize: 'clamp(0.9rem, 1.2vw, 1.05rem)',
+          lineHeight: 1.75,
+          textAlign: 'center',
+          maxWidth: '560px',
+          margin: '0 0 clamp(2rem, 4vh, 3rem)',
+          position: 'relative',
+          zIndex: 1,
+        }}>
+          {ripReelData.intro}
+        </p>
+
+        {/* Framed video */}
+        <div
+          className="hook-video-frame"
+          style={{
+            position: 'relative',
+            zIndex: 1,
+            width: '100%',
+            maxWidth: '920px',
+            aspectRatio: '16 / 9',
+            borderRadius: '4px',
+            overflow: 'hidden',
+            border: '1px solid rgba(212,168,67,0.22)',
+            backgroundColor: '#000',
+            boxShadow: '0 30px 80px rgba(0,0,0,0.7), 0 0 50px rgba(212,168,67,0.05)',
+          }}
+        >
+          {videoPlaying ? (
+            <iframe
+              src={`https://www.youtube-nocookie.com/embed/${YT_VIDEO_ID}?autoplay=1&rel=0&modestbranding=1`}
+              title="YORK — Proof of Tone Reel"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+              style={{ width: '100%', height: '100%', border: 0, display: 'block' }}
+            />
+          ) : (
+            <button
+              type="button"
+              onClick={() => setVideoPlaying(true)}
+              aria-label="Play the YORK proof-of-tone reel"
+              className="hook-video-facade"
+              style={{
+                position: 'absolute',
+                inset: 0,
+                width: '100%',
+                height: '100%',
+                padding: 0,
+                border: 'none',
+                cursor: 'pointer',
+                backgroundColor: '#000',
+              }}
+            >
+              {/* Thumbnail — YouTube serves a grey 120x90 placeholder (HTTP 200)
+                  when a size is missing, so step down by resolution on load. */}
+              <img
+                src={`https://i.ytimg.com/vi/${YT_VIDEO_ID}/maxresdefault.jpg`}
+                alt=""
+                loading="lazy"
+                onLoad={(e) => {
+                  const img = e.currentTarget;
+                  if (img.naturalWidth > 120) return; // real frame loaded
+                  const fallbacks = ['sddefault', 'hqdefault'];
+                  const current = img.src.split('/').pop()?.replace('.jpg', '');
+                  const next = fallbacks[fallbacks.indexOf(current ?? '') + 1] ?? fallbacks[0];
+                  if (current !== 'hqdefault') {
+                    img.src = `https://i.ytimg.com/vi/${YT_VIDEO_ID}/${next}.jpg`;
+                  }
+                }}
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  display: 'block',
+                }}
+              />
+              {/* Cinematic dark + warm wash for legibility */}
+              <span style={{
+                position: 'absolute',
+                inset: 0,
+                background: 'linear-gradient(180deg, rgba(11,10,8,0.25) 0%, rgba(11,10,8,0.15) 45%, rgba(11,10,8,0.55) 100%)',
+              }} />
+              {/* Play button */}
+              <span className="hook-video-play" style={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                width: 'clamp(64px, 8vw, 88px)',
+                height: 'clamp(64px, 8vw, 88px)',
+                borderRadius: '50%',
+                background: 'rgba(212,168,67,0.14)',
+                border: '1px solid rgba(212,168,67,0.6)',
+                backdropFilter: 'blur(4px)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'transform 0.4s cubic-bezier(0.16,1,0.3,1), background 0.4s ease, box-shadow 0.4s ease',
+              }}>
+                <span style={{
+                  width: 0,
+                  height: 0,
+                  marginLeft: '4px',
+                  borderTop: 'clamp(11px, 1.4vw, 15px) solid transparent',
+                  borderBottom: 'clamp(11px, 1.4vw, 15px) solid transparent',
+                  borderLeft: 'clamp(18px, 2.3vw, 24px) solid var(--color-gold)',
+                }} />
+              </span>
+            </button>
+          )}
+        </div>
+
+        {/* Caption beneath the frame */}
+        <div style={{
+          position: 'relative',
+          zIndex: 1,
+          marginTop: 'clamp(1.75rem, 3.5vh, 2.75rem)',
+          maxWidth: '640px',
+          textAlign: 'center',
+        }}>
+          {/* Gold divider */}
+          <div style={{
+            width: '48px',
+            height: '1px',
+            margin: '0 auto 1.5rem',
+            background: 'linear-gradient(90deg, transparent, var(--color-gold), transparent)',
+          }} />
+
+          {(() => {
+            const [quote, source] = ripReelData.pullQuotes[0].split(' — ');
+            return (
+              <>
+                <p style={{
+                  fontFamily: 'var(--font-display)',
+                  fontStyle: 'italic',
+                  fontSize: 'clamp(1.25rem, 2.4vw, 1.75rem)',
+                  lineHeight: 1.4,
+                  color: 'var(--color-paper)',
+                  marginBottom: '1.1rem',
+                }}>
+                  {quote}
+                </p>
+                <p style={{
+                  fontFamily: 'var(--font-ui)',
+                  fontSize: '0.6rem',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.3em',
+                  color: 'var(--color-gold)',
+                  opacity: 0.75,
+                }}>
+                  {source}
+                </p>
+              </>
+            );
+          })()}
+
+          {/* Meta row */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '0.85rem',
+            marginTop: '1.75rem',
+            fontFamily: 'var(--font-ui)',
+            fontSize: '0.6rem',
+            textTransform: 'uppercase',
+            letterSpacing: '0.22em',
+            color: 'var(--color-muted)',
+          }}>
+            <span>Sizzle Reel</span>
+            <span style={{ color: 'var(--color-gold)', opacity: 0.5 }}>·</span>
+            <span>Proof of Tone</span>
+            <span style={{ color: 'var(--color-gold)', opacity: 0.5 }}>·</span>
+            <span>{filmData.genre}</span>
+          </div>
+        </div>
+      </section>
+
+      {/* ======== SECTION B2 — THE SCRIPT ======== */}
+      <section
+        style={{
+          padding: 'var(--spacing-section) clamp(1.25rem, 4vw, 3rem)',
+          position: 'relative',
+          overflow: 'hidden',
+        }}
+      >
+        {/* Ambient warm glow */}
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: '65%',
+          transform: 'translate(-50%, -50%)',
+          width: 'min(700px, 80%)',
+          height: '70%',
+          background: 'radial-gradient(ellipse, rgba(212,168,67,0.07) 0%, transparent 65%)',
+          pointerEvents: 'none',
+          zIndex: 0,
+        }} />
+
+        <div className="hook-script-grid">
+          {/* Left — Copy */}
+          <div>
+            <span className="eyebrow" style={{ display: 'block', marginBottom: '1rem' }}>
+              The Manuscript
+            </span>
+            <h2 style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 'clamp(1.9rem, 4vw, 3rem)',
+              lineHeight: 1.1,
+              color: 'var(--color-paper)',
+              marginBottom: '1.25rem',
+            }}>
+              The whole journey, on the page.
+            </h2>
+            <p style={{
+              color: 'var(--color-muted)',
+              fontSize: 'clamp(0.95rem, 1.2vw, 1.1rem)',
+              lineHeight: 1.85,
+              maxWidth: '520px',
+              marginBottom: '2.25rem',
+            }}>
+              A {filmData.pageCount}-page {filmData.draftStatus.toLowerCase()}, written in the language of the
+              frontier and formatted to industry-standard structure. From the tobacco fields of Virginia to
+              the shores of the Pacific, every scene of York's journey — the wonder, the betrayal, the
+              defiance — is here to read in full.
+            </p>
+
+            {/* Stat chips */}
+            <div style={{ display: 'flex', gap: '2.5rem', marginBottom: '2.5rem', flexWrap: 'wrap' }}>
+              {[
+                { k: 'Pages', v: filmData.pageCount },
+                { k: 'Status', v: filmData.draftStatus },
+                { k: 'Format', v: 'Screenplay' },
+              ].map((s) => (
+                <div key={s.k}>
+                  <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.55rem', textTransform: 'uppercase', letterSpacing: '0.22em', color: 'var(--color-muted)', marginBottom: '0.4rem' }}>{s.k}</p>
+                  <p style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', color: 'var(--color-gold)' }}>{s.v}</p>
+                </div>
+              ))}
+            </div>
+
+            <a
+              href={scriptPdf}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hook-script-cta"
+            >
+              Read the Complete Script
+              <span aria-hidden="true" style={{ fontSize: '0.9em' }}>↗</span>
+            </a>
+          </div>
+
+          {/* Right — Manuscript page preview */}
+          <div className="hook-script-visual">
+            <div className="hook-manuscript-shadow hook-manuscript-shadow--2" aria-hidden="true" />
+            <div className="hook-manuscript-shadow" aria-hidden="true" />
+
+            <div className="hook-flip">
+              <div className="hook-flip-inner">
+                <div className="hook-flip-face hook-flip-front">
+              <div className="hook-manuscript-head">
+                <span className="hook-manuscript-kicker">Screenplay · Excerpt</span>
+                <span className="hook-manuscript-title">{filmData.title}</span>
+              </div>
+              <div className="hook-manuscript-lines">
+                {scriptData.teaserLines.map((line, i) => (
+                  <div key={i} style={{ minHeight: '1.35em', whiteSpace: 'pre' }}>{line || ' '}</div>
+                ))}
+              </div>
+              <div className="hook-manuscript-fade" />
+              <div className="hook-manuscript-sheen" aria-hidden="true" />
+              <div className="hook-manuscript-stamp">
+                {filmData.pageCount} PP · {filmData.draftStatus}
+              </div>
+                </div>
+
+                {/* BACK — title cover */}
+                <div className="hook-flip-face hook-flip-back">
+                  <span className="eyebrow" style={{ marginBottom: '1.25rem' }}>The Screenplay</span>
+                  <h3 style={{
+                    fontFamily: 'var(--font-display)',
+                    fontSize: 'clamp(2.5rem, 5vw, 3.5rem)',
+                    letterSpacing: '0.1em',
+                    color: 'var(--color-gold)',
+                    lineHeight: 1,
+                    marginBottom: '1.25rem',
+                  }}>
+                    {filmData.title}
+                  </h3>
+                  <div style={{ width: '50px', height: '1px', background: 'linear-gradient(90deg, transparent, var(--color-gold), transparent)', marginBottom: '1.25rem' }} />
+                  <p style={{
+                    fontFamily: 'var(--font-display)',
+                    fontStyle: 'italic',
+                    fontSize: 'clamp(0.9rem, 1.3vw, 1.05rem)',
+                    color: 'var(--color-paper)',
+                    lineHeight: 1.6,
+                    maxWidth: '80%',
+                    marginBottom: '1.75rem',
+                  }}>
+                    {filmData.tagline}
+                  </p>
+                  <a
+                    href={scriptPdf}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hook-flip-cta"
+                  >
+                    Read the Complete Script ↗
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -529,14 +874,228 @@ export default function Hook() {
       </section>
 
       <style>{`
-        .editorial-pitch {
-          font-family: var(--font-display) !important;
-          font-size: var(--text-heading) !important;
-          color: var(--color-paper) !important;
-          line-height: 1.4 !important;
-          font-weight: 400 !important;
-          max-width: none !important;
-          font-style: italic !important;
+        /* ── Script section layout ── */
+        .hook-script-grid {
+          position: relative;
+          z-index: 1;
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: clamp(3rem, 6vw, 5rem);
+          max-width: 1200px;
+          margin: 0 auto;
+          align-items: center;
+        }
+        @media (min-width: 900px) {
+          .hook-script-grid {
+            grid-template-columns: 1.05fr 0.95fr;
+          }
+        }
+
+        .hook-script-visual {
+          position: relative;
+          min-height: 520px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          perspective: 1800px;
+        }
+
+        /* Stacked pages behind the card (straight, gently offset) */
+        .hook-manuscript-shadow {
+          position: absolute;
+          width: min(370px, 84%);
+          aspect-ratio: 8.5 / 11;
+          border-radius: 8px;
+          background: linear-gradient(180deg, #171412 0%, #100f0d 100%);
+          border: 1px solid rgba(212,168,67,0.10);
+          transform: translate(10px, 14px) rotate(1.5deg);
+          box-shadow: 0 24px 60px rgba(0,0,0,0.55);
+        }
+        .hook-manuscript-shadow--2 {
+          transform: translate(20px, 26px) rotate(3deg);
+          opacity: 0.6;
+        }
+
+        /* Flip card */
+        .hook-flip {
+          position: relative;
+          width: min(370px, 84%);
+          aspect-ratio: 8.5 / 11;
+          z-index: 1;
+        }
+        .hook-flip-inner {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          transform-style: preserve-3d;
+          transition: transform 1s cubic-bezier(0.16,1,0.3,1);
+          animation: manuscriptFloat 7s ease-in-out infinite;
+        }
+        .hook-flip:hover .hook-flip-inner {
+          transform: rotateY(180deg);
+          animation: none;
+        }
+        .hook-flip-face {
+          position: absolute;
+          inset: 0;
+          border-radius: 8px;
+          overflow: hidden;
+          backface-visibility: hidden;
+          -webkit-backface-visibility: hidden;
+          background:
+            radial-gradient(120% 60% at 50% -8%, rgba(212,168,67,0.10) 0%, transparent 55%),
+            linear-gradient(180deg, #211d18 0%, #171410 62%, #131110 100%);
+          border: 1px solid rgba(212,168,67,0.28);
+          box-shadow:
+            0 40px 90px rgba(0,0,0,0.7),
+            0 0 50px rgba(212,168,67,0.06),
+            inset 0 1px 0 rgba(255,240,210,0.06),
+            inset 0 0 40px rgba(0,0,0,0.35);
+        }
+        .hook-flip-back {
+          transform: rotateY(180deg);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+          padding: 2rem;
+          background:
+            radial-gradient(ellipse at 50% 32%, rgba(212,168,67,0.12) 0%, transparent 60%),
+            linear-gradient(180deg, #211d18 0%, #131110 100%);
+          border-color: rgba(212,168,67,0.42);
+        }
+        .hook-flip-cta {
+          display: inline-block;
+          font-family: var(--font-ui);
+          font-size: 0.6rem;
+          text-transform: uppercase;
+          letter-spacing: 0.22em;
+          color: var(--color-gold);
+          text-decoration: none;
+          padding: 0.7rem 1.4rem;
+          border: 1px solid rgba(212,168,67,0.5);
+          border-radius: 2px;
+          background: rgba(212,168,67,0.06);
+          transition: background 0.35s ease, border-color 0.35s ease;
+        }
+        .hook-flip-cta:hover {
+          background: rgba(212,168,67,0.14);
+          border-color: rgba(212,168,67,0.85);
+        }
+        @keyframes manuscriptFloat {
+          0%, 100% { transform: translateY(0) rotateX(0deg); }
+          50%      { transform: translateY(-14px) rotateX(2deg); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .hook-flip-inner { animation: none; }
+        }
+
+        /* Letterhead */
+        .hook-manuscript-head {
+          display: flex;
+          flex-direction: column;
+          gap: 0.4rem;
+          padding: 1.5rem 1.75rem 1.1rem;
+          border-bottom: 1px solid rgba(212,168,67,0.14);
+        }
+        .hook-manuscript-kicker {
+          font-family: var(--font-ui);
+          font-size: 0.5rem;
+          text-transform: uppercase;
+          letter-spacing: 0.3em;
+          color: var(--color-muted);
+        }
+        .hook-manuscript-title {
+          font-family: var(--font-display);
+          font-size: 1.5rem;
+          letter-spacing: 0.28em;
+          color: rgba(212,168,67,0.85);
+          text-transform: uppercase;
+        }
+
+        .hook-manuscript-lines {
+          padding: 1.5rem 1.75rem;
+          font-family: 'Courier New', Courier, monospace;
+          font-size: 0.7rem;
+          line-height: 1.75;
+          color: rgba(240,230,210,0.52);
+        }
+        .hook-manuscript-fade {
+          position: absolute;
+          left: 0; right: 0; bottom: 0;
+          height: 42%;
+          background: linear-gradient(180deg, transparent 0%, #131110 86%);
+          pointer-events: none;
+        }
+        /* Soft moving light across the paper */
+        .hook-manuscript-sheen {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          background: linear-gradient(115deg, transparent 30%, rgba(255,240,210,0.06) 48%, transparent 62%);
+          background-size: 250% 250%;
+          animation: manuscriptSheen 7s ease-in-out infinite;
+        }
+        @keyframes manuscriptSheen {
+          0%, 100% { background-position: 120% 0; }
+          50%      { background-position: -20% 0; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .hook-manuscript-sheen { animation: none; }
+        }
+        .hook-manuscript-stamp {
+          position: absolute;
+          bottom: 1.25rem;
+          left: 50%;
+          transform: translateX(-50%);
+          font-family: var(--font-ui);
+          font-size: 0.55rem;
+          text-transform: uppercase;
+          letter-spacing: 0.25em;
+          color: var(--color-gold);
+          white-space: nowrap;
+          padding: 0.55rem 1.1rem;
+          border: 1px solid rgba(212,168,67,0.35);
+          border-radius: 2px;
+          background: rgba(11,10,8,0.65);
+          backdrop-filter: blur(4px);
+        }
+
+        .hook-script-cta {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.6rem;
+          padding: 0.95rem clamp(1.5rem, 5vw, 2.5rem);
+          border: 1px solid rgba(212,168,67,0.45);
+          border-radius: 2px;
+          background: rgba(212,168,67,0.06);
+          color: var(--color-gold);
+          font-family: var(--font-ui);
+          font-size: 0.72rem;
+          text-transform: uppercase;
+          letter-spacing: 0.22em;
+          text-decoration: none;
+          transition: background 0.4s ease, border-color 0.4s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s ease;
+        }
+        .hook-script-cta:hover {
+          background: rgba(212,168,67,0.14);
+          border-color: rgba(212,168,67,0.8);
+          transform: translateY(-2px);
+          box-shadow: 0 12px 32px rgba(0,0,0,0.5), 0 0 24px rgba(212,168,67,0.12);
+        }
+        .hook-video-facade:hover .hook-video-play,
+        .hook-video-facade:focus-visible .hook-video-play {
+          transform: translate(-50%, -50%) scale(1.08);
+          background: rgba(212,168,67,0.24);
+          box-shadow: 0 0 40px rgba(212,168,67,0.25);
+        }
+        .hook-video-frame {
+          transition: border-color 0.5s ease, box-shadow 0.5s ease;
+        }
+        .hook-video-frame:hover {
+          border-color: rgba(212,168,67,0.4);
+          box-shadow: 0 30px 90px rgba(0,0,0,0.8), 0 0 60px rgba(212,168,67,0.1);
         }
         @keyframes scrollBounce {
           0%, 100% { transform: translateY(0); }

@@ -190,7 +190,7 @@ export default function RipReel() {
           display: grid;
           grid-template-columns: 1fr;
           gap: clamp(1.25rem, 3vw, 2.5rem);
-          max-width: 1100px;
+          max-width: 1440px;
           margin: 0 auto;
           position: relative;
           z-index: 1;
@@ -366,9 +366,10 @@ export default function RipReel() {
           }}>
             <video
               controls
-              preload="auto"
+              preload="metadata"
               playsInline
-              src="https://res.cloudinary.com/dmhabztbf/video/upload/v1782803449/2026_York_Ripreel_Final_cqyxox.mp4#t=0.1"
+              poster="https://res.cloudinary.com/dmhabztbf/video/upload/so_6,w_1200,q_auto/v1782803449/2026_York_Ripreel_Final_cqyxox.jpg"
+              src="https://res.cloudinary.com/dmhabztbf/video/upload/v1782803449/2026_York_Ripreel_Final_cqyxox.mp4"
               style={{
                 width: '100%',
                 aspectRatio: '16 / 9',
@@ -411,9 +412,10 @@ export default function RipReel() {
           }}>
             <video
               controls
-              preload="auto"
+              preload="metadata"
               playsInline
-              src="https://res.cloudinary.com/dmhabztbf/video/upload/v1782803479/2026PRIVATE_VIEWING_-__York__Rip_Reel_av6een.mp4#t=0.1"
+              poster="https://res.cloudinary.com/dmhabztbf/video/upload/so_8,w_1200,q_auto/v1782803479/2026PRIVATE_VIEWING_-__York__Rip_Reel_av6een.jpg"
+              src="https://res.cloudinary.com/dmhabztbf/video/upload/v1782803479/2026PRIVATE_VIEWING_-__York__Rip_Reel_av6een.mp4"
               style={{
                 width: '100%',
                 aspectRatio: '16 / 9',

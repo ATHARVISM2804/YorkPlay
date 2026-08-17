@@ -218,6 +218,24 @@ export default function Footer() {
           Private auction · Invitation only
         </p>
       </div>
+
+      {/* Maker credit */}
+      <div style={{
+        padding: '0.9rem clamp(1.5rem, 4vw, 3rem) 1.25rem',
+        display: 'flex',
+        justifyContent: 'center',
+      }}>
+        <p style={{
+          fontSize: '0.68rem',
+          color: 'rgba(255,255,255,0.4)',
+          fontFamily: 'var(--font-ui)',
+          fontWeight: 600,
+          letterSpacing: '0.12em',
+          textAlign: 'center',
+        }}>
+          Built with <span style={{ color: 'rgba(212,168,67,0.75)' }}>♥</span> by Atharv Golait
+        </p>
+      </div>
     </footer>
   );
 }
