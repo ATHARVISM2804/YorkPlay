@@ -37,29 +37,33 @@ export default function Nav() {
 
 
 
-  // Attempt autoplay on mount, handle browser block
+  // Play background audio by default. Browsers block autoplay of audio with
+  // sound until the first user gesture, so if the immediate attempt is blocked
+  // we start it on the very first interaction of any kind.
   useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = 0.3;
-      const playPromise = audioRef.current.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          // Browser blocked autoplay — start on first user interaction
-          setIsPlaying(false);
-          const startAudio = () => {
-            if (audioRef.current && audioRef.current.paused) {
-              audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
-            }
-            document.removeEventListener('click', startAudio);
-            document.removeEventListener('touchstart', startAudio);
-            document.removeEventListener('keydown', startAudio);
-          };
-          document.addEventListener('click', startAudio, { once: true });
-          document.addEventListener('touchstart', startAudio, { once: true });
-          document.addEventListener('keydown', startAudio, { once: true });
-        });
-      }
-    }
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.volume = 0.3;
+
+    const events: (keyof DocumentEventMap)[] = ['pointerdown', 'click', 'touchstart', 'keydown'];
+
+    const startAudio = () => {
+      if (!audioRef.current || !audioRef.current.paused) return;
+      audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
+    };
+    const cleanup = () => events.forEach((e) => document.removeEventListener(e, startAudio));
+    const onGesture = () => { startAudio(); cleanup(); };
+
+    // Optimistic immediate attempt (works when the browser already trusts the tab).
+    audio.play()
+      .then(() => setIsPlaying(true))
+      .catch(() => {
+        // Blocked — arm a one-time gesture fallback.
+        setIsPlaying(false);
+        events.forEach((e) => document.addEventListener(e, onGesture, { once: true }));
+      });
+
+    return cleanup;
   }, []);
 
   const toggleAudio = () => {
