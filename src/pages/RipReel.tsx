@@ -470,7 +470,7 @@ export default function RipReel() {
           pointerEvents: 'none',
         }} />
 
-        <div style={{ maxWidth: '960px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
+        <div style={{ maxWidth: '1240px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
           {/* Video Player */}
           <div
             ref={frameRef}

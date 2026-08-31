@@ -385,7 +385,7 @@ export default function Hook() {
             position: 'relative',
             zIndex: 1,
             width: '100%',
-            maxWidth: '920px',
+            maxWidth: '1180px',
             aspectRatio: '16 / 9',
             borderRadius: '4px',
             overflow: 'hidden',

@@ -227,79 +227,62 @@ export default function Nav() {
 
         {/* Right Action Group */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(0.5rem, 2vw, 1rem)', zIndex: 1003 }}>
-          {/* Audio Toggle Button - Creative Waveform */}
+          {/* Audio On/Off Slide Toggle */}
           <button
             onClick={toggleAudio}
+            role="switch"
+            aria-checked={isPlaying}
             data-cursor-label={isPlaying ? "MUTE" : "PLAY"}
+            aria-label={isPlaying ? "Mute Background Audio" : "Play Background Audio"}
             style={{
-              background: isPlaying ? 'rgba(212,168,67,0.05)' : 'none',
-              border: isPlaying ? '1px solid rgba(212,168,67,0.4)' : '1px solid var(--color-line)',
-              color: isPlaying ? 'var(--color-gold)' : 'var(--color-muted)',
-              borderRadius: '20px',
-              padding: '0.4rem 0.5rem',
-              cursor: 'pointer',
-              transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center',
-              gap: '6px',
+              gap: '0.55rem',
+              background: 'none',
+              border: 'none',
+              padding: 0,
+              cursor: 'pointer',
               flexShrink: 0,
-              boxShadow: isPlaying ? '0 0 15px rgba(212,168,67,0.15)' : 'none',
             }}
-            aria-label={isPlaying ? "Mute Background Audio" : "Play Background Audio"}
           >
-            {/* Animated Waveform Icon */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '2px', height: '12px' }}>
-              <div style={{
-                width: '2px',
-                height: isPlaying ? '12px' : '3px',
-                backgroundColor: 'currentColor',
-                borderRadius: '1px',
-                transition: 'height 0.2s ease',
-                animation: isPlaying ? 'wave 1s ease-in-out infinite' : 'none',
-                animationDelay: '0s'
-              }} />
-              <div style={{
-                width: '2px',
-                height: isPlaying ? '12px' : '3px',
-                backgroundColor: 'currentColor',
-                borderRadius: '1px',
-                transition: 'height 0.2s ease',
-                animation: isPlaying ? 'wave 1s ease-in-out infinite' : 'none',
-                animationDelay: '0.2s'
-              }} />
-              <div style={{
-                width: '2px',
-                height: isPlaying ? '12px' : '3px',
-                backgroundColor: 'currentColor',
-                borderRadius: '1px',
-                transition: 'height 0.2s ease',
-                animation: isPlaying ? 'wave 1s ease-in-out infinite' : 'none',
-                animationDelay: '0.4s'
-              }} />
-            </div>
-            
-            <span 
-              className="hide-on-mobile" 
-              style={{ 
-                fontFamily: 'var(--font-ui)', 
-                fontSize: '0.6rem', 
-                fontWeight: 600, 
+            <span
+              className="hide-on-mobile"
+              style={{
+                fontFamily: 'var(--font-ui)',
+                fontSize: '0.6rem',
+                fontWeight: 600,
                 letterSpacing: '0.15em',
-                paddingLeft: '2px'
+                color: isPlaying ? 'var(--color-gold)' : 'var(--color-muted)',
+                transition: 'color 0.3s ease',
               }}
             >
-              {isPlaying ? 'AUDIO ON' : 'AUDIO OFF'}
+              MUSIC
+            </span>
+            {/* Track */}
+            <span style={{
+              position: 'relative',
+              width: '38px',
+              height: '20px',
+              borderRadius: '20px',
+              background: isPlaying ? 'rgba(212,168,67,0.25)' : 'rgba(255,255,255,0.06)',
+              border: `1px solid ${isPlaying ? 'rgba(212,168,67,0.6)' : 'var(--color-line)'}`,
+              transition: 'all 0.35s cubic-bezier(0.16,1,0.3,1)',
+              boxShadow: isPlaying ? '0 0 12px rgba(212,168,67,0.2)' : 'none',
+            }}>
+              {/* Knob */}
+              <span style={{
+                position: 'absolute',
+                top: '50%',
+                left: isPlaying ? 'calc(100% - 17px)' : '2px',
+                transform: 'translateY(-50%)',
+                width: '14px',
+                height: '14px',
+                borderRadius: '50%',
+                backgroundColor: isPlaying ? 'var(--color-gold)' : 'var(--color-muted)',
+                transition: 'all 0.35s cubic-bezier(0.16,1,0.3,1)',
+              }} />
             </span>
           </button>
-          
-          {/* Waveform Keyframes */}
-          <style>{`
-            @keyframes wave {
-              0%, 100% { height: 4px; }
-              50% { height: 12px; }
-            }
-          `}</style>
 
           {/* Place Bid Button */}
           <Link
