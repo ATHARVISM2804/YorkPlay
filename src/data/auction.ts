@@ -186,7 +186,7 @@ export const whyPoints: WhyPoint[] = [
 ];
 
 export const ripReelData: RipReelData = {
-  videoUrl: 'https://www.youtube.com/embed/AuSne7VC404',
+  videoUrl: 'https://www.youtube.com/embed/6CbN1_AnpA4',
   videoType: 'youtube',
   intro: 'A proof of tone — capturing the vast American wilderness and the intimate human story at the heart of York\'s journey.',
   pullQuotes: [

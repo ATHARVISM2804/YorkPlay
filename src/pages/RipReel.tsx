@@ -17,8 +17,8 @@ const ripReelJsonLd = {
   name: 'YORK — Rip Reel',
   description:
     'A proof of tone for the YORK screenplay, capturing the vast American wilderness and the intimate human story at the heart of York’s journey with Lewis & Clark.',
-  thumbnailUrl: 'https://i.ytimg.com/vi/AuSne7VC404/maxresdefault.jpg',
-  embedUrl: 'https://www.youtube.com/embed/AuSne7VC404',
+  thumbnailUrl: 'https://i.ytimg.com/vi/6CbN1_AnpA4/hqdefault.jpg',
+  embedUrl: 'https://www.youtube.com/embed/6CbN1_AnpA4',
   uploadDate: '2026-01-01',
   inLanguage: 'en-US',
   publisher: { '@id': 'https://yorkscreenplay.com/#organization' },
