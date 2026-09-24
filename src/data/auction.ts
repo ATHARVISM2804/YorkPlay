@@ -113,18 +113,18 @@ export const auctionConfig: AuctionConfig = {
 // TODO: wire to Supabase — creator profiles
 export const creators: Creator[] = [
   {
+    name: 'Thomas Ferraro',
+    role: 'Head Writer & Historian',
+    credit: 'Co-written by',
+    bio: 'Thomas Ferraro is a Chicago-area native, decorated law enforcement and security veteran, President of the Niles Historical Society, and published historian. He brings decades of real-world experience and a deep passion for American history to his work as a screenwriter.',
+    photoUrl: 'https://res.cloudinary.com/dmhabztbf/image/upload/v1782803037/thomas_ylzkbd.jpg',
+  },
+  {
     name: 'Jon Stewart',
     role: 'Writer & Creator',
     credit: 'Written by',
     bio: 'Jon Stewart is a Deerfield, Illinois native, former candidate for Governor of Illinois, and former professional wrestler. An accomplished investigative producer, author, show-runner, and documentary filmmaker. He brings a singular blend of political insight, athletic discipline, and investigative rigor to his work as a screenwriter and television show writer.',
     photoUrl: 'https://res.cloudinary.com/dmhabztbf/image/upload/v1782803030/jon_stewarts_euyb5j.png',
-  },
-  {
-    name: 'Thomas Ferraro',
-    role: 'Co-Writer & Historian',
-    credit: 'Co-written by',
-    bio: 'Thomas Ferraro is a Chicago-area native, decorated law enforcement and security veteran, President of the Niles Historical Society, and published historian. He brings decades of real-world experience and a deep passion for American history to his work as a screenwriter.',
-    photoUrl: 'https://res.cloudinary.com/dmhabztbf/image/upload/v1782803037/thomas_ylzkbd.jpg',
   },
 ];
 
@@ -175,8 +175,8 @@ export const whyPoints: WhyPoint[] = [
   },
   {
     number: '04',
-    title: 'Proven creative team',
-    description: 'Written by Emmy-nominated and Sundance-recognised writers with a track record of getting films made and stories seen.',
+    title: 'America, told through the people who lived it',
+    description: 'The York script matters because it tells the story of America\'s westward expansion through the struggles, sacrifices, and contributions of the people who lived it\u2014including Native Americans, Black Americans, women, and settlers\u2014and shows how those experiences helped shape the nation we are today.',
   },
   {
     number: '05',
@@ -245,7 +245,7 @@ export const audioUrl: string = 'https://res.cloudinary.com/dmhabztbf/video/uplo
 
 export const socialLinks = {
   twitter: 'https://x.com/JonStewartIL',
-  email: 'jonalanstewart@aol.com',
+  email: 'lexicononeent@gmail.com',
 };
 
 // ---- Binding Bid Agreement ----

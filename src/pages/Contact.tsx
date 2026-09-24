@@ -381,6 +381,16 @@ export default function Contact() {
               >
                 {socialLinks.email}
               </a>
+              <p style={{
+                fontSize: '0.8125rem',
+                color: 'var(--color-muted)',
+                lineHeight: 1.75,
+                marginTop: '0.85rem',
+              }}>
+                For any questions regarding the York script, project details, submission process,
+                or bidding, please contact us directly through this email. All serious inquiries
+                are welcome and will be responded to as promptly as possible.
+              </p>
             </div>
 
             {/* Decorative quote */}

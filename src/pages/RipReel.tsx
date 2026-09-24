@@ -33,7 +33,7 @@ const castCredits = [
 ];
 
 const productionDetails = [
-  { label: 'Written By', value: 'Award-Winning Screenwriters' },
+  { label: 'Written By', value: 'Thomas Ferraro & Jon Stewart' },
   { label: 'Genre', value: filmData.genre },
   { label: 'Format', value: `${filmData.pageCount}-Page Feature Screenplay` },
   { label: 'Setting', value: 'American Frontier, 1770–1815' },
