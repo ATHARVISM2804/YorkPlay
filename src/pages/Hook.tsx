@@ -350,7 +350,7 @@ export default function Hook() {
         </svg>
 
         <span className="eyebrow" style={{ display: 'block', marginBottom: '0.9rem', position: 'relative', zIndex: 1 }}>
-          The Proof of Tone
+          Sizzle Reel Below
         </span>
         <h2 style={{
           fontFamily: 'var(--font-display)',
@@ -397,7 +397,7 @@ export default function Hook() {
           {videoPlaying ? (
             <iframe
               src={`https://www.youtube-nocookie.com/embed/${YT_VIDEO_ID}?autoplay=1&rel=0&modestbranding=1`}
-              title="YORK — Proof of Tone Reel"
+              title="YORK — Sizzle Reel"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
               style={{ width: '100%', height: '100%', border: 0, display: 'block' }}
@@ -406,7 +406,7 @@ export default function Hook() {
             <button
               type="button"
               onClick={() => setVideoPlaying(true)}
-              aria-label="Play the YORK proof-of-tone reel"
+              aria-label="Play the YORK sizzle reel"
               className="hook-video-facade"
               style={{
                 position: 'absolute',
@@ -539,8 +539,6 @@ export default function Hook() {
           }}>
             <span>Sizzle Reel</span>
             <span style={{ color: 'var(--color-gold)', opacity: 0.5 }}>·</span>
-            <span>Proof of Tone</span>
-            <span style={{ color: 'var(--color-gold)', opacity: 0.5 }}>·</span>
             <span>{filmData.genre}</span>
           </div>
         </div>
@@ -608,16 +606,6 @@ export default function Hook() {
                 </div>
               ))}
             </div>
-
-            <a
-              href={scriptPdf}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hook-script-cta"
-            >
-              Read the Complete Script
-              <span aria-hidden="true" style={{ fontSize: '0.9em' }}>↗</span>
-            </a>
           </div>
 
           {/* Right — Manuscript page preview */}
@@ -861,7 +849,7 @@ export default function Hook() {
           He returned West and became a hero.
         </h2>
         <p style={{ color: 'var(--color-muted)', marginBottom: '2.5rem', fontSize: '1rem', maxWidth: '520px', margin: '0 auto 2.5rem' }}>
-          Watch the proof-of-tone rip reel, then dive into the full screenplay. This is a story that demands to be told.
+          Watch the sizzle reel, then dive into the full screenplay. This is a story that demands to be told.
         </p>
         <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
           <Link to="/rip-reel">
@@ -1062,28 +1050,6 @@ export default function Hook() {
           backdrop-filter: blur(4px);
         }
 
-        .hook-script-cta {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.6rem;
-          padding: 0.95rem clamp(1.5rem, 5vw, 2.5rem);
-          border: 1px solid rgba(212,168,67,0.45);
-          border-radius: 2px;
-          background: rgba(212,168,67,0.06);
-          color: var(--color-gold);
-          font-family: var(--font-ui);
-          font-size: 0.72rem;
-          text-transform: uppercase;
-          letter-spacing: 0.22em;
-          text-decoration: none;
-          transition: background 0.4s ease, border-color 0.4s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s ease;
-        }
-        .hook-script-cta:hover {
-          background: rgba(212,168,67,0.14);
-          border-color: rgba(212,168,67,0.8);
-          transform: translateY(-2px);
-          box-shadow: 0 12px 32px rgba(0,0,0,0.5), 0 0 24px rgba(212,168,67,0.12);
-        }
         .hook-video-facade:hover .hook-video-play,
         .hook-video-facade:focus-visible .hook-video-play {
           transform: translate(-50%, -50%) scale(1.08);

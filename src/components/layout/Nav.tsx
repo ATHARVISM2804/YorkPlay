@@ -45,25 +45,28 @@ export default function Nav() {
     if (!audio) return;
     audio.volume = 0.3;
 
-    const events: (keyof DocumentEventMap)[] = ['pointerdown', 'click', 'touchstart', 'keydown'];
+    // Only events that actually grant playback permission in browsers.
+    const events: (keyof DocumentEventMap)[] = [
+      'pointerdown', 'pointerup', 'click', 'touchstart', 'touchend', 'keydown',
+    ];
 
-    const startAudio = () => {
-      if (!audioRef.current || !audioRef.current.paused) return;
-      audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
-    };
-    const cleanup = () => events.forEach((e) => document.removeEventListener(e, startAudio));
-    const onGesture = () => { startAudio(); cleanup(); };
+    // Retry on every interaction until playback actually succeeds, then stop
+    // listening. A single attempt is not enough: the first gesture can still be
+    // rejected, and we want the score running the moment the browser allows it.
+    function onGesture() {
+      const a = audioRef.current;
+      if (!a || !a.paused) return;
+      a.play().then(() => { setIsPlaying(true); disarm(); }).catch(() => {});
+    }
+    const arm = () => events.forEach((e) => document.addEventListener(e, onGesture, { passive: true }));
+    const disarm = () => events.forEach((e) => document.removeEventListener(e, onGesture));
 
-    // Optimistic immediate attempt (works when the browser already trusts the tab).
+    // Immediate attempt — succeeds when the browser already trusts this site.
     audio.play()
       .then(() => setIsPlaying(true))
-      .catch(() => {
-        // Blocked — arm a one-time gesture fallback.
-        setIsPlaying(false);
-        events.forEach((e) => document.addEventListener(e, onGesture, { once: true }));
-      });
+      .catch(() => { setIsPlaying(false); arm(); });
 
-    return cleanup;
+    return disarm;
   }, []);
 
   const toggleAudio = () => {
@@ -246,17 +249,17 @@ export default function Nav() {
             }}
           >
             <span
-              className="hide-on-mobile"
               style={{
                 fontFamily: 'var(--font-ui)',
-                fontSize: '0.6rem',
+                fontSize: '0.58rem',
                 fontWeight: 600,
-                letterSpacing: '0.15em',
+                letterSpacing: '0.12em',
                 color: isPlaying ? 'var(--color-gold)' : 'var(--color-muted)',
                 transition: 'color 0.3s ease',
+                whiteSpace: 'nowrap',
               }}
             >
-              MUSIC
+              SOUND
             </span>
             {/* Track */}
             <span style={{

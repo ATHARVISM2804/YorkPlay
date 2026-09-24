@@ -188,7 +188,7 @@ export const whyPoints: WhyPoint[] = [
 export const ripReelData: RipReelData = {
   videoUrl: 'https://www.youtube.com/embed/6CbN1_AnpA4',
   videoType: 'youtube',
-  intro: 'A proof of tone — capturing the vast American wilderness and the intimate human story at the heart of York\'s journey.',
+  intro: 'The sizzle reel — capturing the vast American wilderness and the intimate human story at the heart of York\'s journey.',
   pullQuotes: [
     '"The kind of story America forgot to tell itself. Until now." — Private Screening Note',
     '"Epic in scope, devastating in its intimacy. This is prestige cinema." — Industry Reader',

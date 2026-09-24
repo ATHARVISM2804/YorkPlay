@@ -16,7 +16,7 @@ const ripReelJsonLd = {
   '@type': 'VideoObject',
   name: 'YORK — Rip Reel',
   description:
-    'A proof of tone for the YORK screenplay, capturing the vast American wilderness and the intimate human story at the heart of York’s journey with Lewis & Clark.',
+    'The sizzle reel for the YORK screenplay, capturing the vast American wilderness and the intimate human story at the heart of York’s journey with Lewis & Clark.',
   thumbnailUrl: 'https://i.ytimg.com/vi/6CbN1_AnpA4/hqdefault.jpg',
   embedUrl: 'https://www.youtube.com/embed/6CbN1_AnpA4',
   uploadDate: '2026-01-01',
@@ -48,9 +48,9 @@ const productionDetails = [
  */
 export default function RipReel() {
   useSeo({
-    title: 'The Expedition — YORK Rip Reel & Proof of Tone',
+    title: 'The Expedition — YORK Sizzle Reel',
     description:
-      'Watch the YORK rip reel: a proof of tone for the screenplay, from the vast American wilderness to the intimate story of the man Lewis & Clark refused to free.',
+      'Watch the YORK sizzle reel: from the vast American wilderness to the intimate story of the man Lewis & Clark refused to free.',
     path: '/rip-reel',
     type: 'video.other',
     jsonLd: ripReelJsonLd,
@@ -351,7 +351,7 @@ export default function RipReel() {
             margin: '0 auto',
             lineHeight: 1.7,
           }}>
-            Two proof-of-tone films capturing the spirit and scope of York's journey.
+            Two films capturing the spirit and scope of York's journey.
           </p>
         </div>
 
