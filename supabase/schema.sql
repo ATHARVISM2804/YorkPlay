@@ -52,3 +52,41 @@ create policy select_admin
 --   • Authentication → Users → Add user  (owner's email + password)
 --   • Copy Project URL + anon public key into .env.local
 -- ============================================================
+
+-- ============================================================
+-- Script access requests
+-- The screenplay is not published publicly; interested parties
+-- request it here and the owner sends it manually.
+-- ============================================================
+
+create table if not exists public.script_requests (
+  id          uuid primary key default gen_random_uuid(),
+  created_at  timestamptz not null default now(),
+  name        text        not null,
+  company     text        not null,
+  role        text        not null,
+  email       text        not null,
+  message     text,
+  user_agent  text
+);
+
+create index if not exists script_requests_created_idx
+  on public.script_requests (created_at desc);
+
+alter table public.script_requests enable row level security;
+
+-- Anonymous visitors may only submit a request; they can never read them back.
+drop policy if exists script_requests_insert_public on public.script_requests;
+create policy script_requests_insert_public
+  on public.script_requests
+  for insert
+  to anon, authenticated
+  with check (length(name) > 0 and length(email) > 0);
+
+-- Only the signed-in owner may read requests.
+drop policy if exists script_requests_select_admin on public.script_requests;
+create policy script_requests_select_admin
+  on public.script_requests
+  for select
+  to authenticated
+  using (true);

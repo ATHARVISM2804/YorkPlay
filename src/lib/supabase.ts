@@ -53,3 +53,13 @@ export interface BidInsert {
   agreed: boolean;
   user_agent?: string;
 }
+
+/** Payload for a request to read the screenplay. */
+export interface ScriptRequestInsert {
+  name: string;
+  company: string;
+  role: string;
+  email: string;
+  message?: string;
+  user_agent?: string;
+}
