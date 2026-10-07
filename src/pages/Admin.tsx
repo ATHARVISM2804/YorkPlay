@@ -1,12 +1,13 @@
 import { useState, useEffect, useCallback, type CSSProperties } from 'react';
 import { Link } from 'react-router-dom';
 import type { Session } from '@supabase/supabase-js';
-import { supabase, isSupabaseConfigured, type BidRow } from '../lib/supabase';
+import { supabase, isSupabaseConfigured, type BidRow, type ScriptRequestRow } from '../lib/supabase';
 import { logoUrl, filmData } from '../data/auction';
 import AdminLogin from '../components/admin/AdminLogin';
 import { useSeo } from '../lib/seo';
 
 type SortKey = 'bid_amount' | 'created_at';
+type Tab = 'bids' | 'requests';
 
 function formatCurrency(amount: number): string {
   return new Intl.NumberFormat('en-US', {
@@ -28,11 +29,11 @@ function formatDate(iso: string): string {
 }
 
 /**
- * PROTECTED — Owner-only bid dashboard.
+ * PROTECTED — Owner-only dashboard.
  * Renders the login form until a Supabase Auth session exists; then lists every
- * binding bid in one view. Row-Level Security ensures bids are only readable by
- * an authenticated user, so the data is protected even if this route is reached
- * directly.
+ * binding bid and every script request, one tab each. Row-Level Security ensures
+ * both tables are only readable by an authenticated user, so the data is
+ * protected even if this route is reached directly.
  */
 export default function Admin() {
   useSeo({
@@ -48,6 +49,10 @@ export default function Admin() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [sortKey, setSortKey] = useState<SortKey>('bid_amount');
+  const [tab, setTab] = useState<Tab>('bids');
+  const [requests, setRequests] = useState<ScriptRequestRow[]>([]);
+  const [requestsLoading, setRequestsLoading] = useState(false);
+  const [requestsError, setRequestsError] = useState('');
 
   // Track auth session.
   useEffect(() => {
@@ -79,14 +84,35 @@ export default function Admin() {
     setBids((data as BidRow[]) ?? []);
   }, [sortKey]);
 
+  const loadRequests = useCallback(async () => {
+    if (!supabase) return;
+    setRequestsLoading(true);
+    setRequestsError('');
+    const { data, error: qErr } = await supabase
+      .from('script_requests')
+      .select('*')
+      .order('created_at', { ascending: false });
+    setRequestsLoading(false);
+    if (qErr) {
+      setRequestsError('Could not load script requests. ' + qErr.message);
+      return;
+    }
+    setRequests((data as ScriptRequestRow[]) ?? []);
+  }, []);
+
   // Load (and reload on sort change) once authenticated.
   useEffect(() => {
     if (session) loadBids();
   }, [session, loadBids]);
 
+  useEffect(() => {
+    if (session) loadRequests();
+  }, [session, loadRequests]);
+
   const signOut = async () => {
     if (supabase) await supabase.auth.signOut();
     setBids([]);
+    setRequests([]);
   };
 
   if (!isSupabaseConfigured) {
@@ -151,6 +177,30 @@ export default function Admin() {
     </button>
   );
 
+  const tabBtn = (key: Tab, label: string, count: number) => (
+    <button
+      role="tab"
+      aria-selected={tab === key}
+      onClick={() => setTab(key)}
+      style={{
+        background: 'none',
+        border: 'none',
+        borderBottom: '2px solid ' + (tab === key ? 'var(--color-gold)' : 'transparent'),
+        marginBottom: '-1px',
+        color: tab === key ? 'var(--color-gold)' : 'var(--color-muted)',
+        padding: '0 0 0.75rem',
+        fontFamily: 'var(--font-ui)',
+        fontSize: '0.65rem',
+        fontWeight: 600,
+        textTransform: 'uppercase',
+        letterSpacing: '0.15em',
+        cursor: 'pointer',
+      }}
+    >
+      {label} <span className="tabular-nums" style={{ opacity: 0.7 }}>({count})</span>
+    </button>
+  );
+
   return (
     <main id="main-content" tabIndex={-1} style={{ minHeight: '100vh', padding: 'clamp(1.75rem, 5vh, 3rem) clamp(1.25rem, 4vw, 3rem) 4rem' }}>
       <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
@@ -200,12 +250,21 @@ export default function Admin() {
         </div>
 
         {/* Title */}
-        <div style={{ marginBottom: '2rem' }}>
+        <div style={{ marginBottom: '1.5rem' }}>
           <span className="eyebrow" style={{ display: 'block', marginBottom: '0.5rem' }}>Owner Dashboard</span>
           <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.8rem, 4vw, 2.6rem)', color: 'var(--color-paper)', fontWeight: 500 }}>
-            Binding Bids
+            {tab === 'bids' ? 'Binding Bids' : 'Script Requests'}
           </h1>
         </div>
+
+        {/* Tabs */}
+        <div role="tablist" aria-label="Dashboard sections" style={{ display: 'flex', gap: '1.75rem', marginBottom: '1.75rem', borderBottom: '1px solid var(--color-line)' }}>
+          {tabBtn('bids', 'Bids', bids.length)}
+          {tabBtn('requests', 'Script Requests', requests.length)}
+        </div>
+
+        {tab === 'bids' ? (
+        <>
 
         {/* Summary + controls */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.25rem' }}>
@@ -269,6 +328,63 @@ export default function Admin() {
             </tbody>
           </table>
         </div>
+        </>
+        ) : (
+        <>
+        {/* Summary + controls */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.25rem' }}>
+          <div>
+            <div style={{ fontSize: '0.6rem', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--color-muted)', fontFamily: 'var(--font-ui)', marginBottom: '0.3rem' }}>Total Requests</div>
+            <div className="tabular-nums" style={{ fontFamily: 'var(--font-display)', fontSize: '1.6rem', color: 'var(--color-paper)' }}>{requests.length}</div>
+          </div>
+          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+            <span style={{ fontSize: '0.6rem', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--color-muted)', fontFamily: 'var(--font-ui)' }}>Newest first</span>
+            <button
+              onClick={loadRequests}
+              style={{ background: 'none', border: '1px solid var(--color-line)', color: 'var(--color-muted)', borderRadius: '2px', padding: '0.4rem 0.9rem', fontFamily: 'var(--font-ui)', fontSize: '0.6rem', textTransform: 'uppercase', letterSpacing: '0.15em', cursor: 'pointer' }}
+            >
+              Refresh
+            </button>
+          </div>
+        </div>
+
+        {requestsError && <p role="alert" style={{ color: 'var(--color-live)', fontSize: '0.85rem', marginBottom: '1rem' }}>{requestsError}</p>}
+
+        {/* Table */}
+        <div style={{ overflowX: 'auto', border: '1px solid var(--color-line)', borderRadius: '3px', background: 'var(--color-surface)' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '860px' }}>
+            <thead>
+              <tr>
+                <th style={th}>Name</th>
+                <th style={th}>Company</th>
+                <th style={th}>Role</th>
+                <th style={th}>Email</th>
+                <th style={th}>Message</th>
+                <th style={th}>Submitted</th>
+              </tr>
+            </thead>
+            <tbody>
+              {requestsLoading ? (
+                <tr><td style={td} colSpan={6}>Loading…</td></tr>
+              ) : requests.length === 0 ? (
+                <tr><td style={{ ...td, color: 'var(--color-muted)' }} colSpan={6}>No script requests yet.</td></tr>
+              ) : (
+                requests.map((r) => (
+                  <tr key={r.id}>
+                    <td style={{ ...td, whiteSpace: 'nowrap' }}>{r.name}</td>
+                    <td style={td}>{r.company}</td>
+                    <td style={td}>{r.role}</td>
+                    <td style={td}><a href={`mailto:${r.email}`} style={{ color: 'var(--color-paper)', textDecoration: 'underline', textUnderlineOffset: '3px', textDecorationColor: 'rgba(212,168,67,0.3)' }}>{r.email}</a></td>
+                    <td style={{ ...td, maxWidth: '320px', whiteSpace: 'pre-wrap', color: r.message ? 'var(--color-paper)' : 'var(--color-muted)' }}>{r.message || '—'}</td>
+                    <td style={{ ...td, color: 'var(--color-muted)', whiteSpace: 'nowrap' }}>{formatDate(r.created_at)}</td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+        </>
+        )}
       </div>
     </main>
   );

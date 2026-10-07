@@ -54,6 +54,18 @@ export interface BidInsert {
   user_agent?: string;
 }
 
+/** Shape of a row in the `script_requests` table. */
+export interface ScriptRequestRow {
+  id: string;
+  created_at: string;
+  name: string;
+  company: string;
+  role: string;
+  email: string;
+  message: string | null;
+  user_agent: string | null;
+}
+
 /** Payload for a request to read the screenplay. */
 export interface ScriptRequestInsert {
   name: string;
