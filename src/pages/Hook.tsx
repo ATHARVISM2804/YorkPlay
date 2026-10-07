@@ -8,7 +8,6 @@ import BidConsole from '../components/ui/BidConsole';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 import Viewfinder from '../components/ui/Viewfinder';
 import { useSeo } from '../lib/seo';
-import ScriptRequestModal from '../components/ui/ScriptRequestModal';
 
 // Derive the YouTube video id from the configured embed URL
 const YT_VIDEO_ID = ripReelData.videoUrl.split('/embed/')[1]?.split(/[?&]/)[0] ?? '';
@@ -44,7 +43,6 @@ export default function Hook() {
 
   const [heroIndex, setHeroIndex] = useState(0);
   const [videoPlaying, setVideoPlaying] = useState(false);
-  const [scriptRequestOpen, setScriptRequestOpen] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
   const heroImgRef = useRef<HTMLDivElement>(null);
 
@@ -656,13 +654,14 @@ export default function Hook() {
                   }}>
                     {filmData.tagline}
                   </p>
-                  <button
-                    type="button"
-                    onClick={() => setScriptRequestOpen(true)}
+                  <a
+                    href={scriptData.pdfUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="hook-flip-cta"
                   >
-                    Request the Script ↗
-                  </button>
+                    Read the Complete Script ↗
+                  </a>
                 </div>
               </div>
             </div>
@@ -904,8 +903,6 @@ export default function Hook() {
         }
         .hook-flip-cta {
           display: inline-block;
-          font: inherit;
-          cursor: pointer;
           font-family: var(--font-ui);
           font-size: 0.6rem;
           text-transform: uppercase;
@@ -1019,8 +1016,6 @@ export default function Hook() {
           50% { transform: translateY(6px); }
         }
       `}</style>
-          <ScriptRequestModal open={scriptRequestOpen} onClose={() => setScriptRequestOpen(false)} />
-
-</main>
+    </main>
   );
 }

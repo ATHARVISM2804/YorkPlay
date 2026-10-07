@@ -1,8 +1,7 @@
-import { useRef, useState, useLayoutEffect } from 'react';
+import { useRef, useLayoutEffect } from 'react';
 import { gsap } from 'gsap';
 import { filmData, scriptData } from '../data/auction';
 import scriptBgImage from '../assets/script_bg.png';
-import ScriptRequestModal from '../components/ui/ScriptRequestModal';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 import { useSeo } from '../lib/seo';
 
@@ -34,7 +33,6 @@ export default function Script() {
     jsonLd: scriptJsonLd,
   });
 
-  const [scriptRequestOpen, setScriptRequestOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
   const vaultRef = useRef<HTMLDivElement>(null);
@@ -79,8 +77,6 @@ export default function Script() {
         }
         .script-read-cta {
           display: inline-flex;
-          font: inherit;
-          cursor: pointer;
           align-items: center;
           gap: 0.6rem;
           max-width: 100%;
@@ -207,14 +203,15 @@ export default function Script() {
           </p>
 
           {/* Read the script CTA */}
-          <button
-            type="button"
-            onClick={() => setScriptRequestOpen(true)}
+          <a
+            href={scriptData.pdfUrl}
+            target="_blank"
+            rel="noopener noreferrer"
             className="script-read-cta"
           >
-            Request the Script
+            Read the Complete Script
             <span aria-hidden="true" style={{ fontSize: '0.9em' }}>↗</span>
-          </button>
+          </a>
 
           {/* Stats Row */}
           <div className="script-stats-grid" style={{ maxWidth: '420px', margin: '0 auto' }}>
@@ -442,22 +439,21 @@ export default function Script() {
                 borderTop: '1px solid rgba(255,255,255,0.05)',
                 textAlign: 'center',
               }}>
-                <button
-                  type="button"
-                  onClick={() => setScriptRequestOpen(true)}
+                <a
+                  href={scriptData.pdfUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="script-read-cta"
                 >
-                  Request the Script
+                  Read the Complete Script
                   <span aria-hidden="true" style={{ fontSize: '0.9em' }}>↗</span>
-                </button>
+                </a>
               </div>
             </div>
           </div>
 
         </div>
       </section>
-          <ScriptRequestModal open={scriptRequestOpen} onClose={() => setScriptRequestOpen(false)} />
-
-</main>
+    </main>
   );
 }

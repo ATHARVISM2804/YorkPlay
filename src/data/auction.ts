@@ -67,6 +67,8 @@ export interface RipReelData {
 
 export interface ScriptData {
   googleDocsUrl: string;
+  /** Full screenplay PDF, hosted in Supabase Storage (public bucket). */
+  pdfUrl: string;
   viewingTerms: string;
   teaserLines: string[];
 }
@@ -211,6 +213,7 @@ export const timelineEntries: TimelineEntry[] = [
 // TODO: wire to Supabase — script access
 export const scriptData: ScriptData = {
   googleDocsUrl: '#',
+  pdfUrl: 'https://zdardtagkstfyugdgnvd.supabase.co/storage/v1/object/public/screenplay/york-screenplay.pdf',
   viewingTerms: 'This screenplay is provided for evaluation by serious bidders only. By accessing this document, you agree not to copy, distribute, or share its contents. All rights reserved.',
   teaserLines: [
     'FADE IN:',

@@ -65,13 +65,3 @@ export interface ScriptRequestRow {
   message: string | null;
   user_agent: string | null;
 }
-
-/** Payload for a request to read the screenplay. */
-export interface ScriptRequestInsert {
-  name: string;
-  company: string;
-  role: string;
-  email: string;
-  message?: string;
-  user_agent?: string;
-}
