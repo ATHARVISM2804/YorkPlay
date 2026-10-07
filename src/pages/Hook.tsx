@@ -1,12 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { filmData, heroMediaUrls, creators, whyPoints, ripReelData, scriptData } from '../data/auction';
 import RevealText from '../components/ui/RevealText';
 import RevealImage from '../components/ui/RevealImage';
 import BidConsole from '../components/ui/BidConsole';
-import MagneticButton from '../components/ui/MagneticButton';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 import Viewfinder from '../components/ui/Viewfinder';
 import { useSeo } from '../lib/seo';
@@ -809,55 +807,6 @@ export default function Hook() {
               </div>
             </div>
           ))}
-        </div>
-      </section>
-
-      {/* ======== SECTION F — CLOSING CTA ======== */}
-      <section
-        style={{
-          padding: 'var(--spacing-section) clamp(1.25rem, 4vw, 3rem)',
-          background: 'linear-gradient(to bottom, var(--color-ink), var(--color-surface))',
-          textAlign: 'center',
-          position: 'relative',
-        }}
-      >
-        {/* Subtle warm glow at top */}
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: '400px',
-          height: '200px',
-          background: 'radial-gradient(ellipse, rgba(212,168,67,0.06) 0%, transparent 70%)',
-          pointerEvents: 'none',
-        }} />
-
-        <span className="eyebrow" style={{ display: 'block', marginBottom: '1.5rem' }}>
-          The Journey Continues
-        </span>
-        <h2
-          style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: 'var(--text-display)',
-            color: 'var(--color-paper)',
-            marginBottom: '1rem',
-            fontWeight: 400,
-            fontStyle: 'italic',
-          }}
-        >
-          He returned West and became a hero.
-        </h2>
-        <p style={{ color: 'var(--color-muted)', marginBottom: '2.5rem', fontSize: '1rem', maxWidth: '520px', margin: '0 auto 2.5rem' }}>
-          Watch the sizzle reel, then dive into the full screenplay. This is a story that demands to be told.
-        </p>
-        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-          <Link to="/rip-reel">
-            <MagneticButton variant="primary">Watch the Rip Reel</MagneticButton>
-          </Link>
-          <Link to="/script">
-            <MagneticButton variant="secondary">Read the Manuscript</MagneticButton>
-          </Link>
         </div>
       </section>
 

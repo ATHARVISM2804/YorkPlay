@@ -100,8 +100,8 @@ export const filmData: FilmData = {
 export const auctionConfig: AuctionConfig = {
   currency: 'USD',
   currencySymbol: '$',
-  startingBid: 75000,
-  currentBid: 185000,
+  startingBid: 88000,
+  currentBid: 0, // no bids above the opening figure yet
   minimumIncrement: 5000,
   bidsPlaced: 22,
   leadingBidder: 'Bidder 0xA4',

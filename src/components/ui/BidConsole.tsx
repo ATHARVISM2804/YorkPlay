@@ -10,13 +10,26 @@ import BidModal from './BidModal';
  * Displays the reserve/starting figure and auction status, then opens the
  * Binding Bid modal where a real, legally-binding offer is collected and stored.
  */
+function formatCurrency(amount: number): string {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: auctionConfig.currency,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(amount);
+}
+
 export default function BidConsole() {
   const [modalOpen, setModalOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const particleEmitterRef = useRef<ParticleEmitterRef>(null);
 
+  // Until a bid lands, the floor is the opening figure; after that it steps up
+  // by the minimum increment.
   const currentBid = auctionConfig.currentBid;
-  const minimumNextBid = currentBid + auctionConfig.minimumIncrement;
+  const minimumNextBid = currentBid > 0
+    ? currentBid + auctionConfig.minimumIncrement
+    : auctionConfig.startingBid;
 
   // Fire the celebratory gold particle burst from the centre of the console.
   const burst = () => {
@@ -87,7 +100,7 @@ export default function BidConsole() {
           letterSpacing: '0.02em',
         }}
       >
-        $XXX,000
+        {formatCurrency(minimumNextBid)}
       </div>
 
       {/* Countdown */}
